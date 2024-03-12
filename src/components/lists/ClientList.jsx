@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 export default function ClientList({data}) {
 
   const handleEditUser = (userId) => {
@@ -23,6 +24,7 @@ export default function ClientList({data}) {
         <li>Notificar: { <input type="checkbox" checked={data.notify} readOnly></input>}</li>
         <button onClick={() => window.location = '/book'}>Agregar Cita</button>
         <button onClick={handleEditUser}>Editar</button>
+        <Link to={`/edit/${data.id}`}>{data.name}</Link>
 
       </ul>
     </>

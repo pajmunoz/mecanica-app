@@ -69,14 +69,9 @@ export default function MyRouter() {
         e.preventDefault()
         console.log('save')
     }
+    
 
-    const handleEditUser = (userId) => {
-        // Guardar el ID del usuario que se está editando en el estado local
-        console.log('hi')
-        setEditingUserId(userId);
-        // Aquí puedes implementar la lógica para abrir un formulario de edición o cualquier otra interfaz de usuario
-        window.location = `/edit/${data.data.id}`
-    };
+    
     return (
         <Router> {/* Asegúrate de envolver todo en un componente Router */}
             <Routes>
@@ -87,7 +82,7 @@ export default function MyRouter() {
                         <Route path="/admin" element={<AdminPage handleLogout={handleLogout} username={loggedInUser} />} />
 
                         <Route path="/book" element={<BookForm />} />
-                        <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit} handleEditUser={handleEditUser} />} />
+                        <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit}  />} />
                         <Route path="/createClient" element={<CreateClientForm />} />
                     </>
                 ) : (
