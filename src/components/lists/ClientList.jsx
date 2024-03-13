@@ -104,11 +104,11 @@ export default function ClientList({ data, onDelete }) {
 
                 <Col>
                   
-                  <Button type='button'  variant='secondary' onClick={() => navigate(`/book/${data.id}`)}>Citas</Button>
+                  <Button type='button'  variant='primary' onClick={() => navigate(`/book/${data.id}`)}>Visitas</Button>
              
                 </Col>
                 <Col>
-                  <Button variant='secondary' onClick={handleEditUser}>Editar</Button>
+                  <Button variant='success' onClick={handleEditUser}>Editar</Button>
                 </Col>
                 <Col>
                   <Button variant='danger' onClick={handleDelete}>Borrar</Button>

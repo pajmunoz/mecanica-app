@@ -3,6 +3,7 @@ import ClientList from "../lists/ClientList"
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default function AdminPage({ handleLogout, username }) {
   const [loading, setLoading] = useState(true);
@@ -78,7 +79,7 @@ export default function AdminPage({ handleLogout, username }) {
 
       <hr />
       {loading ? (
-        <div>Loading...</div>
+        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" /> 
       ) : (
         <>
           {clientes.map(client => (

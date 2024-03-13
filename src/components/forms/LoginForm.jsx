@@ -6,6 +6,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default function LoginForm({ handleLogin, loggedUser }) {
   const [logging, setLogging] = useState(false)
@@ -36,14 +37,15 @@ export default function LoginForm({ handleLogin, loggedUser }) {
 
   return (
     <>
-    <Row className='mt-5'>
+    <Row className='mt-5 position-absolute top-50 start-50 translate-middle'>
     <Col></Col>
       <Col md="auto">
-        {logging ? <div>cargando...</div> : <>
+        {logging ? <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" /> : <>
         <h3 className='text-center'>
             MecanicApp
             <small className="text-body-secondary">Login</small>
           </h3>
+          <hr />
           <form onSubmit={handleSubmit}  className='text-center' >
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default" >

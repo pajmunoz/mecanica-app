@@ -1,5 +1,12 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Table from 'react-bootstrap/Table';
+import Spinner from 'react-bootstrap/Spinner';
 
 export default function BookForm() {
   const { id } = useParams();
@@ -11,6 +18,12 @@ export default function BookForm() {
   const [userAppointments, setUserAppointments] = useState([]);
   const [loading, setLoading] = useState(false);
 
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
+  };
+
   const handleCancel = async (e) => {
     window.location.replace('/admin')
   }
@@ -21,7 +34,7 @@ export default function BookForm() {
 
   const fetchUserAppointments = async () => {
     try {
-      setLoading(true); 
+      setLoading(true);
       const response = await fetch(`http://localhost:4000/clientes/${id}/citas`);
       if (!response.ok) {
         throw new Error('Error al obtener citas del usuario');
@@ -30,7 +43,7 @@ export default function BookForm() {
       setUserAppointments(data);
     } catch (error) {
       console.error('Error:', error);
-    }finally {
+    } finally {
       setLoading(false); // Desactivar loader al completar la carga de citas
     }
   };
@@ -81,46 +94,102 @@ export default function BookForm() {
     }
   };
 
-  return (<>
-  {loading ? <div>Loading...</div>:
-  
-  <>
-  <h1>{id}</h1>
-  <form onSubmit={handleSubmit}>
-    <label htmlFor='fechaVisita'>Dia de visita</label><br />
-    <input type="date" name="visit_day" id="fechaVisita" value={visitDay} onChange={(e) => setVisitDay(e.target.value)} required /><br />
-    <label htmlFor='horaInicio'>Hora Inicio</label><br />
-    <input type="time" name="start_hour" id="horaInicio" value={startHour} onChange={(e) => setStartHour(e.target.value)} /><br />
-    <label htmlFor='duracion'>Duración en horas:</label><br />
-    <input type="number" min="0.5" max="24" step=".5" name="duration" id="duration" value={duration} onChange={(e) => setDuration(e.target.value)} /><br />
-    <textarea name="postContent" rows={4} cols={40} placeholder="Añade un comentario" value={comment} onChange={(e) => setComment(e.target.value)} /><br />
-    <button type='submit'>Enviar</button>
-  </form>
-  <button onClick={handleCancel}>Cancelar</button>
-  {savedData && (
-    <div>
-      {/* Mostrar datos guardados */}
-    </div>
-  )}
+  return (
+    <>
+      <Row>
+        <Col></Col>
+        <Col md='auto'>
+          <h3 className='text-center mt-5'>
+            Nueva
+            <small className="text-body-secondary"> Visita</small>
+          </h3>
+          <hr />
+          <form onSubmit={handleSubmit}>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Fecha de Visita
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Fecha de Visita"
+                aria-describedby="inputGroup-sizing-default"
+                type="date" name="visit_day" id="fechaVisita" value={visitDay} onChange={(e) => setVisitDay(e.target.value)} required
+              />
+            </InputGroup>
 
-  <h2>Citas del Usuario:</h2>
-  <ul>
-    {userAppointments.map((appointment) => (
-      <li key={appointment.id}>
-        {/* Mostrar información de cada cita */}
-        <p>Día de visita: {appointment.visit_day}</p>
-        <p>Hora de inicio: {appointment.start_hour}</p>
-        <p>Duración: {appointment.duration} horas</p>
-        <p>Comentario: {appointment.comment}</p>
-        <button onClick={() => handleDeleteAppointment(appointment.id)}>Eliminar</button>
-      </li>
-    ))}
-  </ul>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Hora de Inicio
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Hora de Inicio"
+                aria-describedby="inputGroup-sizing-default"
+                type="time" name="start_hour" id="horaInicio" value={startHour} onChange={(e) => setStartHour(e.target.value)} required
+              />
+            </InputGroup>
 
-</>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Duración
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Duración"
+                aria-describedby="inputGroup-sizing-default"
+                type="number" min="0.5" max="24" step=".5" name="duration" id="duration" value={duration} onChange={(e) => setDuration(e.target.value)} required
+              />
+            </InputGroup>
 
-  }
-  </>
-   
+            <InputGroup>
+              <InputGroup.Text>Notas</InputGroup.Text>
+              <Form.Control as="textarea" aria-label="Notas" value={comment} onChange={(e) => setComment(e.target.value)} name="postContent" rows={4} cols={40} />
+            </InputGroup>
+            <hr />
+            <Button className='w-100' type='submit'>Crear Nueva</Button>
+          </form>
+          <Button className='w-100 mt-2' variant='secondary' onClick={handleCancel}>Volver</Button>
+        </Col>
+        <Col></Col>
+      </Row>
+      <Row>
+        <h3 className='text-center mt-5'>
+          Lista de 
+          <small className="text-body-secondary"> Visitas Guardadas</small>
+        </h3>
+        <hr />
+        {loading ? <Spinner className='text-center' animation="grow" variant="dark" />: <>
+
+          <ul>
+            {userAppointments.length<1 ? <p className='text-center text-secondary'>No hay visitas</p>: 
+            userAppointments.map((appointment) => (
+              <Table key={appointment.id} responsive striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Día de visita</th>
+                    <th>Hora de inicio</th>
+                    <th>Duración</th>
+                    <th>Comentario</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody >
+                  <tr>
+                    <td>{appointment.id}</td>
+                    <td>{formatDate(appointment.visit_day)}</td>
+                    <td>{appointment.start_hour}</td>
+                    <td>{appointment.duration} horas</td>
+                    <td>{appointment.comment}</td>
+                    <td className='text-center'> <Button variant='danger' onClick={() => handleDeleteAppointment(appointment.id)}>Eliminar</Button></td>
+                  </tr>
+                </tbody>
+              </Table>
+            ))}
+          </ul>
+
+        </>
+
+        }
+      </Row>
+    </>
+
   );
 }
