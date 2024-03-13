@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 export default function EditClientForm() {
   const [message, setMessage] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
@@ -15,7 +21,7 @@ export default function EditClientForm() {
     brand: '',
     plate: '',
     oil_date: '',
-    notify:0
+    notify: 0
   });
 
   const handleCancel = async (e) => {
@@ -31,7 +37,7 @@ export default function EditClientForm() {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:4000/clientes/${id}`);
-       
+
         if (!response.ok) {
           throw new Error('Error al obtener datos del servidor');
         }
@@ -86,7 +92,7 @@ export default function EditClientForm() {
       setTimeout(() => {
         window.location.replace('/admin')
       }, 2000);
-    
+
       if (!response.ok) {
         throw new Error('Error al actualizar datos del cliente'),
         handleMessage('Error al actualizar datos del cliente!')
@@ -100,31 +106,122 @@ export default function EditClientForm() {
   };
 
   return (
-    <>
-      {loading ? <div>loading...</div> : <>
-        <h1>{cliente.name}</h1>
-        <form onSubmit={handleSubmit}>
-          <input type="text" name="name" placeholder={formData.name} value={formData.name} onChange={handleChange} /><br />
-          <input type="text" name="lastName" placeholder={formData.lastName} value={formData.lastName} onChange={handleChange} /><br />
-          <input type="mail" name="email" placeholder={formData.email} value={formData.email} onChange={handleChange} /><br />
-          <input type="text" name="model" placeholder={formData.model} value={formData.model} onChange={handleChange} /><br />
-          <input type="number" name="year" placeholder={formData.year} value={formData.year} onChange={handleChange} /><br />
-          <input type="text" name="brand" placeholder={formData.brand} value={formData.brand} onChange={handleChange} /><br />
-          <input type="text" name="plate" placeholder={formData.plate} value={formData.plate} onChange={handleChange} /><br />
-          <input type="date" name="oil_date" value={formatDate(formData.oil_date)} onChange={handleChange} /><br />
-          <label>Notificar</label><br />
-          <input type="checkbox" name='notify' checked={formData.notify} onChange={handleChange}></input><br />
-          <button type="submit">Guardar</button>
-        </form>
-        <button onClick={handleCancel}>Cancelar</button>
-        {
-         
-         showSuccessMessage && <h1>{message}</h1>
-         
 
-        }
-      </>
-      }
+    <>
+      <Row>
+        <Col></Col>
+        <Col md='auto'>
+          <h3 className='text-center mt-5'>
+            Editar
+            <small className="text-body-secondary"> Cliente</small>
+          </h3>
+          <hr />
+          {loading ? <div>loading...</div> :
+            <form onSubmit={handleSubmit}>
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Nombre
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Default"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="name" placeholder="Juan" value={formData.name} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Apellido
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Apellido"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="lastName" placeholder="Perez" value={formData.lastName} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Correo
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Email"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="mail" name="email" placeholder="***@****.com" value={formData.email} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Año
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Año"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="number" name="year" placeholder="1991" value={formData.year} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Modelo
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Modelo"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="model" placeholder="Forza" value={formData.model} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Marca
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Marca"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="brand" placeholder="Suzuki" value={formData.brand} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Placa
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Placa"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="plate" placeholder="OFS-224" value={formData.plate} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Fecha cambio de aceite
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Aceite"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="date" name="oil_date" value={formData.oil_date} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <Form.Check
+                type="switch" checked={formData.notify === 1} name='notify' onChange={handleChange} label='Notificar al cliente'
+              />
+
+
+              <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
+            </form>
+          }
+
+          <hr />
+          <Button className='w-100 my-2' variant='secondary' onClick={() => window.location = '/admin'}>Cancelar</Button>
+          {showSuccessMessage && <h1>{message}</h1>}
+
+        </Col>
+        <Col></Col>
+      </Row>
     </>
   )
 }
