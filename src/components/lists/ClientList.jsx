@@ -29,8 +29,6 @@ export default function ClientList({ data, onDelete }) {
     console.log('delete')
   }
 
-
-
   useEffect(() => {
     if (data) {
       fetchCitaCount();

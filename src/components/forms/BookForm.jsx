@@ -17,6 +17,7 @@ export default function BookForm() {
   const [comment, setComment] = useState('');
   const [savedData, setSavedData] = useState(null);
   const [userAppointments, setUserAppointments] = useState([]);
+  const [userById, setUserById] = useState([]);
   const [loading, setLoading] = useState(false);
 
 
@@ -31,6 +32,7 @@ export default function BookForm() {
 
   useEffect(() => {
     fetchUserAppointments();
+    fetchUserById();
   }, []); // Se ejecuta solo una vez al cargar el componente
 
   const fetchUserAppointments = async () => {
@@ -42,6 +44,22 @@ export default function BookForm() {
       }
       const data = await response.json();
       setUserAppointments(data);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false); // Desactivar loader al completar la carga de citas
+    }
+  };
+
+  const fetchUserById = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`${Url}/clientes/${id}`);
+      if (!response.ok) {
+        throw new Error('Error al obtener citas del usuario');
+      }
+      const data = await response.json();
+      setUserById(data);
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -102,7 +120,7 @@ export default function BookForm() {
         <Col md='auto'>
           <h3 className='text-center mt-5'>
             Nueva
-            <small className="text-body-secondary"> Visita</small>
+            <small className="text-body-secondary"> Visita de {userById.name} {userById.lastName}</small>
           </h3>
           <hr />
           <form onSubmit={handleSubmit}>
@@ -152,38 +170,38 @@ export default function BookForm() {
       </Row>
       <Row>
         <h3 className='text-center mt-5'>
-          Lista de 
-          <small className="text-body-secondary"> Visitas Guardadas</small>
+          Visitas
+          <small className="text-body-secondary">  hechas por {userById.name} {userById.lastName}</small>
         </h3>
         <hr />
-        {loading ? <Spinner className='text-center' animation="grow" variant="dark" />: <>
+        {loading ? <Spinner className='text-center' animation="grow" variant="dark" /> : <>
 
           <ul>
-            {userAppointments.length<1 ? <p className='text-center text-secondary'>No hay visitas</p>: 
-            userAppointments.map((appointment) => (
-              <Table key={appointment.id} responsive striped bordered hover>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Día de visita</th>
-                    <th>Hora de inicio</th>
-                    <th>Duración</th>
-                    <th>Comentario</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody >
-                  <tr>
-                    <td>{appointment.id}</td>
-                    <td>{formatDate(appointment.visit_day)}</td>
-                    <td>{appointment.start_hour}</td>
-                    <td>{appointment.duration} horas</td>
-                    <td>{appointment.comment}</td>
-                    <td className='text-center'> <Button variant='danger' onClick={() => handleDeleteAppointment(appointment.id)}>Eliminar</Button></td>
-                  </tr>
-                </tbody>
-              </Table>
-            ))}
+            {userAppointments.length < 1 ? <p className='text-center text-secondary'>No hay visitas</p> :
+              userAppointments.map((appointment) => (
+                <Table key={appointment.id} responsive striped bordered hover>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Día de visita</th>
+                      <th>Hora de inicio</th>
+                      <th>Duración</th>
+                      <th>Comentario</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                    <tr>
+                      <td>{appointment.id}</td>
+                      <td>{formatDate(appointment.visit_day)}</td>
+                      <td>{appointment.start_hour}</td>
+                      <td>{appointment.duration} horas</td>
+                      <td>{appointment.comment}</td>
+                      <td className='text-center'> <Button variant='danger' onClick={() => handleDeleteAppointment(appointment.id)}>Eliminar</Button></td>
+                    </tr>
+                  </tbody>
+                </Table>
+              ))}
           </ul>
 
         </>

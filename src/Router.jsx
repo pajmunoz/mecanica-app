@@ -22,7 +22,7 @@ export default function MyRouter() {
             setLoggedInUser(storedUsername);
         }
         let timeoutId;
-
+/* 
         const handleActivity = () => {
             clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
             timeoutId = setTimeout(() => {
@@ -43,8 +43,8 @@ export default function MyRouter() {
         return () => {
             window.removeEventListener('mousemove', handleActivity);
             window.removeEventListener('keydown', handleActivity);
-            clearTimeout(timeoutId);
-        };
+            clearTimeout(timeoutId); 
+        };*/
     }, []);
 
     const handleLogin = () => {
