@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import ClientList from "../lists/ClientList"
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
 
 export default function AdminPage({ handleLogout, username }) {
   const [loading, setLoading] = useState(true);
@@ -42,13 +45,38 @@ export default function AdminPage({ handleLogout, username }) {
   };
 
   return (
-    
+
     <>
-      <div>AdminPage</div>
-      <p>Bienvenido {username}</p>
-      <button onClick={handleLogout}>Cerrar Sesion</button>
+      <Row className='mt-5'>
+        <Col>
+          <h3>
+            Bienvenido
+            <small className="text-body-secondary"> {username}</small>
+          </h3>
+        </Col>
+        <Col></Col>
+        <Col className='text-end' md="auto">
+          <Row>
+            
+            <Col>
+              <Button variant="secondary" onClick={handleLogout}>Cerrar Sesion</Button>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
       <p>Notificaciones</p>
-      <p>Lista de Clientes</p>
+      <Row>
+        <Col>
+          <h4>Lista de Clientes</h4>
+        </Col>
+        <Col className='text-end'>
+          <Button variant="primary" onClick={() => (window.location.href = '/createClient')}>
+            Agregar cliente
+          </Button>
+        </Col>
+      </Row>
+
+      <hr />
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -56,9 +84,7 @@ export default function AdminPage({ handleLogout, username }) {
           {clientes.map(client => (
             <ClientList key={client.id} data={client} onDelete={handleDeleteClient} />
           ))}
-          <button onClick={() => (window.location.href = '/createClient')}>
-            Agregar cliente
-          </button>
+
         </>
       )}
     </>

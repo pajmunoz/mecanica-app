@@ -1,6 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
+import Button from 'react-bootstrap/Button';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 export default function LoginForm({ handleLogin, loggedUser }) {
   const [logging, setLogging] = useState(false)
   const [username, setUsername] = useState('');
@@ -19,27 +25,56 @@ export default function LoginForm({ handleLogin, loggedUser }) {
       setIsAuthenticated(true);
       handleLogin(isAuthenticated)
       loggedUser(username)
-      
+
       navigate('/admin');
     } catch (err) {
       setLogging(false)
       setError('Credenciales inválidas');
-      
+
     }
   };
 
   return (
     <>
-      {logging ? <div>cargando...</div> : <>
-        <div>LoginForm</div>
-        <form onSubmit={handleSubmit}>
-          <input type="text" placeholder="Usuario" value={username} onChange={(e) => setUsername(e.target.value)} />
-          <input type="password" placeholder="Contraseña" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <button type="submit">Iniciar sesión</button>
-          {error && <p>{error}</p>}
-        </form>
-      </>
-      }
+    <Row className='mt-5'>
+    <Col></Col>
+      <Col md="auto">
+        {logging ? <div>cargando...</div> : <>
+        <h3 className='text-center'>
+            MecanicApp
+            <small className="text-body-secondary">Login</small>
+          </h3>
+          <form onSubmit={handleSubmit}  className='text-center' >
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default" >
+                Usuario
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Default"
+                aria-describedby="inputGroup-sizing-default"
+                value={username} onChange={(e) => setUsername(e.target.value)}
+              />
+            </InputGroup>
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Contraseña
+              </InputGroup.Text>
+              <Form.Control
+                type='password'
+                aria-label="Default"
+                aria-describedby="inputGroup-sizing-default"
+                value={password} onChange={(e) => setPassword(e.target.value)}
+              />
+            </InputGroup>
+            <Button variant="dark" type="submit">Iniciar sesión</Button>
+            {error && <p>{error}</p>}
+          </form>
+        </>
+        }
+      </Col>
+      <Col></Col>
+      </Row>
+
     </>
   )
 
