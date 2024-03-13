@@ -71,7 +71,7 @@ export default function AdminPage({ handleLogout, username }) {
         </Col>
         <Col className='text-end'>
           <Button variant="primary" onClick={() => (window.location.href = '/createClient')}>
-            Agregar cliente
+            Nuevo cliente (+)
           </Button>
         </Col>
       </Row>
