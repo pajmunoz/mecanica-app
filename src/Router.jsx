@@ -81,7 +81,7 @@ export default function MyRouter() {
                     <>
                         <Route path="/admin" element={<AdminPage handleLogout={handleLogout} username={loggedInUser} />} />
 
-                        <Route path="/book" element={<BookForm />} />
+                        <Route path="/book/:id" element={<BookForm />} />
                         <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit}  />} />
                         <Route path="/createClient" element={<CreateClientForm />} />
                     </>
