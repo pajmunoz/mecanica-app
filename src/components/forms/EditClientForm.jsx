@@ -38,7 +38,7 @@ export default function EditClientForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${Url}:4000/clientes/${id}`);
+        const response = await fetch(`${Url}/clientes/${id}`);
 
         if (!response.ok) {
           throw new Error('Error al obtener datos del servidor');
@@ -80,7 +80,7 @@ export default function EditClientForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${Url}:4000/clientes/${id}`, {
+      const response = await fetch(`${Url}/clientes/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

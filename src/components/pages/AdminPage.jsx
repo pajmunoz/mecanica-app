@@ -14,7 +14,7 @@ export default function AdminPage({ handleLogout, username }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${Url}:4000/clientes`);
+        const response = await fetch(`${Url}/clientes`);
         const data = await response.json();
         setClientes(data);
         setLoading(false); // Cambiar estado a false después de cargar los datos
@@ -29,7 +29,7 @@ export default function AdminPage({ handleLogout, username }) {
 
   const handleDeleteClient = async (clientId) => {
     try {
-      const response = await fetch(`${Url}:4000/clientes/${clientId}`, {
+      const response = await fetch(`${Url}/clientes/${clientId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

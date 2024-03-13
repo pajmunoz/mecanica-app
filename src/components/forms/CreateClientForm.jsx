@@ -31,7 +31,7 @@ const CreateClientForm = () => {
     e.preventDefault();
     try {
       // Enviar datos al servidor para crear un nuevo cliente
-      const response = await fetch(`${Url}:4000/clientes`, {
+      const response = await fetch(`${Url}/clientes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

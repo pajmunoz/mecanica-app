@@ -39,7 +39,7 @@ export default function ClientList({ data, onDelete }) {
 
   const fetchCitaCount = async () => {
     try {
-      const response = await fetch(`${Url}:4000/clientes/${data.id}/citas/count`);
+      const response = await fetch(`${Url}/clientes/${data.id}/citas/count`);
       if (!response.ok) {
         throw new Error('Error al obtener cantidad de citas');
       }

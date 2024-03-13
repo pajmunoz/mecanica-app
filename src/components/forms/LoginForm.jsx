@@ -21,7 +21,7 @@ export default function LoginForm({ handleLogin, loggedUser }) {
     setLogging(true)
     e.preventDefault();
     try {
-      const response = await axios.post(`${Url}:4000/login`, { username, password });
+      const response = await axios.post(`${Url}/login`, { username, password });
       setLogging(false)
       console.log(response.data); // Mensaje de éxito
       setIsAuthenticated(true);
