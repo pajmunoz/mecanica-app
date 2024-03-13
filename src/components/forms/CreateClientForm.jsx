@@ -4,6 +4,7 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Url } from '../../constant';
 
 const CreateClientForm = () => {
   const [formData, setFormData] = useState({
@@ -30,7 +31,7 @@ const CreateClientForm = () => {
     e.preventDefault();
     try {
       // Enviar datos al servidor para crear un nuevo cliente
-      const response = await fetch('http://localhost:4000/clientes', {
+      const response = await fetch(`${Url}:4000/clientes`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

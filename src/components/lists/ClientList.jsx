@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
+import { Url } from '../../constant';
 
 export default function ClientList({ data, onDelete }) {
   const navigate = useNavigate()
@@ -38,7 +39,7 @@ export default function ClientList({ data, onDelete }) {
 
   const fetchCitaCount = async () => {
     try {
-      const response = await fetch(`http://localhost:4000/clientes/${data.id}/citas/count`);
+      const response = await fetch(`${Url}:4000/clientes/${data.id}/citas/count`);
       if (!response.ok) {
         throw new Error('Error al obtener cantidad de citas');
       }

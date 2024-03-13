@@ -4,6 +4,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import { Url } from '../../constant';
 
 export default function AdminPage({ handleLogout, username }) {
   const [loading, setLoading] = useState(true);
@@ -13,7 +14,7 @@ export default function AdminPage({ handleLogout, username }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:4000/clientes');
+        const response = await fetch(`${Url}:4000/clientes`);
         const data = await response.json();
         setClientes(data);
         setLoading(false); // Cambiar estado a false después de cargar los datos
@@ -28,7 +29,7 @@ export default function AdminPage({ handleLogout, username }) {
 
   const handleDeleteClient = async (clientId) => {
     try {
-      const response = await fetch(`http://localhost:4000/clientes/${clientId}`, {
+      const response = await fetch(`${Url}:4000/clientes/${clientId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

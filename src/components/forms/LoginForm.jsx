@@ -7,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Spinner from 'react-bootstrap/Spinner';
+import { Url } from '../../constant';
 
 export default function LoginForm({ handleLogin, loggedUser }) {
   const [logging, setLogging] = useState(false)
@@ -20,7 +21,7 @@ export default function LoginForm({ handleLogin, loggedUser }) {
     setLogging(true)
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:4000/login', { username, password });
+      const response = await axios.post(`${Url}:4000/login`, { username, password });
       setLogging(false)
       console.log(response.data); // Mensaje de éxito
       setIsAuthenticated(true);
@@ -37,7 +38,7 @@ export default function LoginForm({ handleLogin, loggedUser }) {
 
   return (
     <>
-    <Row className='mt-5 position-absolute top-50 start-50 translate-middle'>
+    <Row className='mt-5'>
     <Col></Col>
       <Col md="auto">
         {logging ? <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" /> : <>

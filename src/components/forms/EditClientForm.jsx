@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Spinner from 'react-bootstrap/Spinner';
+import { Url } from '../../constant';
 
 export default function EditClientForm() {
   const [message, setMessage] = useState(null);
@@ -36,7 +38,7 @@ export default function EditClientForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/clientes/${id}`);
+        const response = await fetch(`${Url}:4000/clientes/${id}`);
 
         if (!response.ok) {
           throw new Error('Error al obtener datos del servidor');
@@ -78,7 +80,7 @@ export default function EditClientForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:4000/clientes/${id}`, {
+      const response = await fetch(`${Url}:4000/clientes/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -116,7 +118,7 @@ export default function EditClientForm() {
             <small className="text-body-secondary"> Cliente</small>
           </h3>
           <hr />
-          {loading ? <div>loading...</div> :
+          {loading ? <Spinner className='position-absolute top-50 start-50 translate-middle' /> :
             <form onSubmit={handleSubmit}>
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">

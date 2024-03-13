@@ -7,6 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
+import { Url } from '../../constant';
 
 export default function BookForm() {
   const { id } = useParams();
@@ -35,7 +36,7 @@ export default function BookForm() {
   const fetchUserAppointments = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/clientes/${id}/citas`);
+      const response = await fetch(`${Url}:4000/clientes/${id}/citas`);
       if (!response.ok) {
         throw new Error('Error al obtener citas del usuario');
       }
@@ -50,7 +51,7 @@ export default function BookForm() {
 
   const handleDeleteAppointment = async (appointmentId) => {
     try {
-      const response = await fetch(`http://localhost:4000/citas/${appointmentId}`, {
+      const response = await fetch(`${Url}:4000/citas/${appointmentId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -67,7 +68,7 @@ export default function BookForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch('http://localhost:4000/guardar-cita', {
+      const response = await fetch(`${Url}:4000/guardar-cita`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
