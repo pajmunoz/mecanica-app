@@ -7,6 +7,7 @@ import MainPage from './components/pages/MainPage';
 import BookForm from './components/forms/BookForm';
 import EditClientForm from './components/forms/EditClientForm';
 import CreateClientForm from './components/forms/CreateClientForm';
+import ErrorPage from './components/pages/ErrorPage';
 
 export default function MyRouter() {
     const [loggedInUser, setLoggedInUser] = useState('');
@@ -22,29 +23,29 @@ export default function MyRouter() {
             setLoggedInUser(storedUsername);
         }
         let timeoutId;
-/* 
-        const handleActivity = () => {
-            clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
-            timeoutId = setTimeout(() => {
-                // Lógica para cerrar la sesión después de 2 minutos de inactividad
-                setIsAuthenticated(false);
-                window.location = '/';
-                localStorage.clear()
-            }, .5 * 60 * 1000); // 2 minutos en milisegundos
-        };
-
-        handleActivity(); // Llama a la función para iniciar el temporizador al principio
-
-        // Configura event listeners para detectar actividad
-        window.addEventListener('mousemove', handleActivity);
-        window.addEventListener('keydown', handleActivity);
-
-        // Limpia los event listeners al desmontar el componente
-        return () => {
-            window.removeEventListener('mousemove', handleActivity);
-            window.removeEventListener('keydown', handleActivity);
-            clearTimeout(timeoutId); 
-        };*/
+        /* 
+                const handleActivity = () => {
+                    clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
+                    timeoutId = setTimeout(() => {
+                        // Lógica para cerrar la sesión después de 2 minutos de inactividad
+                        setIsAuthenticated(false);
+                        window.location = '/';
+                        localStorage.clear()
+                    }, .5 * 60 * 1000); // 2 minutos en milisegundos
+                };
+        
+                handleActivity(); // Llama a la función para iniciar el temporizador al principio
+        
+                // Configura event listeners para detectar actividad
+                window.addEventListener('mousemove', handleActivity);
+                window.addEventListener('keydown', handleActivity);
+        
+                // Limpia los event listeners al desmontar el componente
+                return () => {
+                    window.removeEventListener('mousemove', handleActivity);
+                    window.removeEventListener('keydown', handleActivity);
+                    clearTimeout(timeoutId); 
+                };*/
     }, []);
 
     const handleLogin = () => {
@@ -88,6 +89,7 @@ export default function MyRouter() {
                 ) : (
                     <Route path="/" element={<MainPage />} />
                 )}
+                <Route path="*" element={<ErrorPage />} />
             </Routes>
         </Router>
     );

@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import { Url } from '../../constant';
 
-export default function ClientList({ data, onDelete }) {
+export default function ClientList({ data, onDelete, index }) {
   const navigate = useNavigate()
   const [citaCount, setCitaCount] = useState(0);
   const handleEditUser = (userId) => {
@@ -57,7 +57,7 @@ export default function ClientList({ data, onDelete }) {
               <Table responsive striped bordered hover size="sm">
                 <thead>
                   <tr>
-                    <th>id</th>
+                    <th>#</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
                     <th>Correo</th>
@@ -73,7 +73,7 @@ export default function ClientList({ data, onDelete }) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{data.id}</td>
+                    <td>{index + 1}</td>
                     <td>{data.name}</td>
                     <td>{data.lastName}</td>
                     <td>{data.email}</td>

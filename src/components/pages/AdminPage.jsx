@@ -59,7 +59,7 @@ export default function AdminPage({ handleLogout, username }) {
         <Col></Col>
         <Col className='text-end' md="auto">
           <Row>
-            
+
             <Col>
               <Button variant="secondary" onClick={handleLogout}>Cerrar Sesion</Button>
             </Col>
@@ -80,14 +80,18 @@ export default function AdminPage({ handleLogout, username }) {
 
       <hr />
       {loading ? (
-        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" /> 
+        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" />
       ) : (
         <>
-          {clientes.map(client => (
-            <ClientList key={client.id} data={client} onDelete={handleDeleteClient} />
-          ))}
+          <div className="client-container border border-secondary-subtle p-3 bg-secondary-subtle">
+            {clientes.map((client, index) => (
 
+              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index}/>
+
+            ))}
+          </div>
         </>
+
       )}
     </>
   )
