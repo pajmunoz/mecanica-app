@@ -36,7 +36,7 @@ export default function BookForm() {
   const fetchUserAppointments = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${Url}:4000/clientes/${id}/citas`);
+      const response = await fetch(`${Url}/clientes/${id}/citas`);
       if (!response.ok) {
         throw new Error('Error al obtener citas del usuario');
       }
@@ -51,7 +51,7 @@ export default function BookForm() {
 
   const handleDeleteAppointment = async (appointmentId) => {
     try {
-      const response = await fetch(`${Url}:4000/citas/${appointmentId}`, {
+      const response = await fetch(`${Url}/citas/${appointmentId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -68,7 +68,7 @@ export default function BookForm() {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${Url}:4000/guardar-cita`, {
+      const response = await fetch(`${Url}/guardar-cita`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
