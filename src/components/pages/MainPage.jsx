@@ -1,4 +1,5 @@
 import Button from 'react-bootstrap/Button';
+import { Link } from 'react-router-dom';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import logo from '../../assets/logo.png'
@@ -19,7 +20,9 @@ export default function MainPage() {
             <small className="text-body-secondary"> Gestiona fácil</small>
           </h3>
           <hr />
-          <Button variant="dark" onClick={() => window.location = '/login'}>Iniciar Sesión</Button>
+          <Link to="/login">
+            <Button variant="dark">Iniciar Sesión</Button>
+          </Link>
 
         </Col>
         <Col></Col>

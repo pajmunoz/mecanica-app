@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import LoginForm from './components/forms/LoginForm';
 import AdminPage from "./components/pages/AdminPage";
@@ -8,6 +8,8 @@ import BookForm from './components/forms/BookForm';
 import EditClientForm from './components/forms/EditClientForm';
 import CreateClientForm from './components/forms/CreateClientForm';
 import ErrorPage from './components/pages/ErrorPage';
+import Header from './components/Header';
+import Container from 'react-bootstrap/Container';
 
 export default function MyRouter() {
     const [loggedInUser, setLoggedInUser] = useState('');
@@ -75,6 +77,8 @@ export default function MyRouter() {
 
     return (
         <Router> {/* Asegúrate de envolver todo en un componente Router */}
+        <Header />
+        <Container>
             <Routes>
                 <Route exact path="/" element={<MainPage />} />
                 <Route path="/login" element={<LoginForm handleLogin={handleLogin} loggedUser={handleLoggedUser} />} />
@@ -91,6 +95,7 @@ export default function MyRouter() {
                 )}
                 <Route path="*" element={<ErrorPage />} />
             </Routes>
+            </Container>
         </Router>
     );
 }

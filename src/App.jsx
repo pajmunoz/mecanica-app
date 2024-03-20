@@ -14,8 +14,8 @@ function App() {
 
   return (
     <>
-      <Header />
-      <Container>
+
+
         <Row>
 
           <Col>
@@ -25,7 +25,7 @@ function App() {
           </Col>
    
         </Row>
-      </Container>
+
       <Footer />
 
 
