@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Table from 'react-bootstrap/Table';
-import Spinner from 'react-bootstrap/Spinner';
+import { useParams, useNavigate } from 'react-router-dom';
+import {Button, Form, InputGroup, Row, Col, Table, Spinner} from 'react-bootstrap';
 import { Url } from '../../constant';
 import axios from 'axios';
 
@@ -20,7 +14,7 @@ export default function BookForm() {
   const [userAppointments, setUserAppointments] = useState([]);
   const [userById, setUserById] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const navigate = useNavigate()
 
 
   const formatDate = (dateString) => {
@@ -29,7 +23,7 @@ export default function BookForm() {
   };
 
   const handleCancel = async (e) => {
-    window.location.replace('/admin')
+    navigate('/admin', { replace: true })
   }
 
   useEffect(() => {
