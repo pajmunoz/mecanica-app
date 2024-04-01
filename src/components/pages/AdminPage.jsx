@@ -3,12 +3,13 @@ import ClientList from "../lists/ClientList"
 import { Row, Col, Button, Spinner, Pagination } from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link } from 'react-router-dom';
+import SearchClient from '../forms/SearchForm';
 
 export default function AdminPage({ handleLogout, username }) {
   const [loading, setLoading] = useState(true);
   const [clientes, setClientes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [clientsPerPage] = useState(5);
+  const [clientsPerPage] = useState(4);
   const [currentClients, setCurrentClients] = useState([]);
   const [recentClients, setRecentClients] = useState([]);
 
@@ -41,6 +42,11 @@ export default function AdminPage({ handleLogout, username }) {
     fetchData();
   }, []); // Se ejecuta solo una vez al montar el componente
 
+  const handleSearch = (searchTerm) => {
+    const filteredClients = clientes.filter(client => client.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    setCurrentClients(filteredClients);
+  };
+
   const handleDeleteClient = async (clientId) => {
     try {
       const response = await fetch(`${Url}/clients/${clientId}`, {
@@ -70,52 +76,50 @@ export default function AdminPage({ handleLogout, username }) {
             <small className="text-body-secondary"> {username}</small>
           </h3>
         </Col>
-        <Col></Col>
-        <Col className='text-end' md="auto">
-          <Row>
-
-          </Row>
-        </Col>
       </Row>
       <Row>
         <Col>
           <Button variant="secondary" onClick={handleLogout}>Cerrar Sesion</Button>
         </Col>
+      </Row>
+
+      <SearchClient handleSearch={handleSearch} />
+
+
+      <h5 className='mt-5'>Clientes agregados recientemente</h5>
+      <hr />
+      {loading ? (
+        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" />
+      ) : (
+        <>
+          <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
+            {recentClients.length > 1 ? recentClients.map((client, index) => (
+              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
+            )) : 'No hay resultados para mostrar.'}
+          </div>
+        </>
+      )}
+
+      <Row className='mt-5'>
+        <Col><h5>Lista de Clientes</h5></Col>
         <Col className='text-end'>
           <Link to={'/createClient'}>
             <Button variant="primary">
               Nuevo cliente (+)
             </Button>
           </Link>
-
         </Col>
       </Row>
 
       <hr />
-      <h5>Clientes agregados recientemente</h5>
       {loading ? (
         <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" />
       ) : (
         <>
           <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
-            {recentClients.map((client, index) => (
+            {currentClients.length > 1 ? currentClients.map((client, index) => (
               <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
-            ))}
-          </div>
-
-        </>
-
-      )}
-      <hr />
-      <h5>Lista de Clientes</h5>
-      {loading ? (
-        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" />
-      ) : (
-        <>
-          <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
-            {currentClients.map((client, index) => (
-              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
-            ))}
+            )) : 'No hay resultados para mostrar.'}
           </div>
           <Pagination className='mt-5'>
             <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
