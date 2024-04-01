@@ -20,7 +20,7 @@ const SearchClient = ({ handleSearch }) => {
                     aria-label="Large"
                     aria-describedby="button-addon2"
                     value={searchTerm} onChange={handleChange}
-                    placeholder="Escriba el nombre del cliente"
+                    placeholder="buscar cliente, marca, modelo o patente"
                 />
                 <Button type="submit" variant="outline-primary" id="button-addon2">
                     Buscar cliente
