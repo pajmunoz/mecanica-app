@@ -16,7 +16,7 @@ export default function EditClientForm() {
   const [cliente, setCliente] = useState([]);
   const [formData, setFormData] = useState({
     name: '',
-    lastName: '',
+    lastname: '',
     email: '',
     model: '',
     year: '',
@@ -38,7 +38,7 @@ export default function EditClientForm() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${Url}/clientes/${id}`);
+        const response = await fetch(`${Url}/clients/${id}`);
 
         if (!response.ok) {
           throw new Error('Error al obtener datos del servidor');
@@ -47,7 +47,7 @@ export default function EditClientForm() {
         setCliente(data);
         setFormData({
           name: data.name,
-          lastName: data.lastName,
+          lastname: data.lastname,
           email: data.email,
           model: data.model,
           year: data.year,
@@ -80,7 +80,7 @@ export default function EditClientForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${Url}/clientes/${id}`, {
+      const response = await fetch(`${Url}/clients/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ export default function EditClientForm() {
                 <Form.Control
                   aria-label="Apellido"
                   aria-describedby="inputGroup-sizing-default"
-                  required type="text" name="lastName" placeholder="Perez" value={formData.lastName} onChange={handleChange}
+                  required type="text" name="lastname" placeholder="Perez" value={formData.lastname} onChange={handleChange}
                 />
               </InputGroup>
 

@@ -5,6 +5,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 import { Url } from '../../constant';
+import { Link } from 'react-router-dom';
 
 export default function AdminPage({ handleLogout, username }) {
   const [loading, setLoading] = useState(true);
@@ -14,7 +15,7 @@ export default function AdminPage({ handleLogout, username }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`${Url}/clientes`);
+        const response = await fetch(`${Url}/clients`);
         const data = await response.json();
         setClientes(data);
         setLoading(false); // Cambiar estado a false después de cargar los datos
@@ -29,7 +30,7 @@ export default function AdminPage({ handleLogout, username }) {
 
   const handleDeleteClient = async (clientId) => {
     try {
-      const response = await fetch(`${Url}/clientes/${clientId}`, {
+      const response = await fetch(`${Url}/clients/${clientId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -72,9 +73,12 @@ export default function AdminPage({ handleLogout, username }) {
           <h4>Lista de Clientes</h4>
         </Col>
         <Col className='text-end'>
-          <Button variant="primary" onClick={() => (window.location.href = '/createClient')}>
-            Nuevo cliente (+)
-          </Button>
+          <Link to={'/createClient'}>
+            <Button variant="primary">
+              Nuevo cliente (+)
+            </Button>
+          </Link>
+
         </Col>
       </Row>
 
@@ -86,7 +90,7 @@ export default function AdminPage({ handleLogout, username }) {
           <div className="client-container border border-secondary-subtle p-3 bg-secondary-subtle">
             {clientes.map((client, index) => (
 
-              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index}/>
+              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
 
             ))}
           </div>
