@@ -76,7 +76,7 @@ export default function ClientList({ data, onDelete, index }) {
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{index + 1}</td>
+                    <td>{data.id}</td>
                     <td>{data.name}</td>
                     <td>{data.lastname}</td>
                     <td>{data.email}</td>
