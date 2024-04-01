@@ -37,12 +37,13 @@ export default function ClientList({ data, onDelete, index }) {
 
   const fetchCitaCount = async () => {
     try {
-      const response = await fetch(`${Url}/clientes/${data.id}/citas/count`);
+      const response = await fetch(`${Url}/clients/${data.id}/appointment/count`);
       if (!response.ok) {
         throw new Error('Error al obtener cantidad de citas');
       }
       const responseData = await response.json();
-      setCitaCount(responseData.citaCount);
+      setCitaCount(responseData.data);
+      
     } catch (error) {
       console.error('Error:', error);
     }
@@ -75,7 +76,7 @@ export default function ClientList({ data, onDelete, index }) {
                   <tr>
                     <td>{index + 1}</td>
                     <td>{data.name}</td>
-                    <td>{data.lastName}</td>
+                    <td>{data.lastname}</td>
                     <td>{data.email}</td>
                     <td>{data.brand}</td>
                     <td>{data.model}</td>
@@ -85,6 +86,7 @@ export default function ClientList({ data, onDelete, index }) {
                     <td>{<input type="checkbox" checked={data.notify} readOnly></input>}</td>
                     {data && (
                       <td>{citaCount}</td>
+                      
                     )}
 
                   </tr>

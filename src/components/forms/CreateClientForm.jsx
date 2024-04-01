@@ -5,11 +5,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { Url } from '../../constant';
+import { Link, useNavigate } from 'react-router-dom';
 
 const CreateClientForm = () => {
   const [formData, setFormData] = useState({
     name: '',
-    lastName: '',
+    lastname: '',
     email: '',
     model: '',
     year: '',
@@ -20,7 +21,7 @@ const CreateClientForm = () => {
   });
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [message, setMessage] = useState('');
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     const newValue = type === 'checkbox' ? (checked ? 1 : 0) : value; // Manejar el valor del checkbox como booleano
@@ -31,7 +32,7 @@ const CreateClientForm = () => {
     e.preventDefault();
     try {
       // Enviar datos al servidor para crear un nuevo cliente
-      const response = await fetch(`${Url}/clientes`, {
+      const response = await fetch(`${Url}/clients`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,9 +42,8 @@ const CreateClientForm = () => {
           notify: formData.notify
         }),
       });
-      window.location.replace('/admin')
       const data = await response.json();
-
+      navigate('/admin', { replace: true }),
       setShowSuccessMessage(true);
       setMessage('Cliente creado exitosamente');
       setTimeout(() => {
@@ -88,7 +88,7 @@ const CreateClientForm = () => {
               <Form.Control
                 aria-label="Apellido"
                 aria-describedby="inputGroup-sizing-default"
-                required type="text" name="lastName" placeholder="Perez" value={formData.lastName} onChange={handleChange}
+                required type="text" name="lastname" placeholder="Perez" value={formData.lastname} onChange={handleChange}
               />
             </InputGroup>
 
@@ -162,11 +162,14 @@ const CreateClientForm = () => {
               type="switch" checked={formData.notify === 1} name='notify' onChange={handleChange} label='Notificar al cliente'
             />
 
-
-            <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
+              <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
+   
           </form>
           <hr />
-          <Button className='w-100 my-2' variant='secondary' onClick={() => window.location = '/admin'}>Cancelar</Button>
+          <Link to={'/admin'}>
+            <Button className='w-100 my-2' variant='secondary'>Cancelar</Button>
+          </Link>
+
           {showSuccessMessage && <h1>{message}</h1>}
 
         </Col>

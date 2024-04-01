@@ -8,6 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Table from 'react-bootstrap/Table';
 import Spinner from 'react-bootstrap/Spinner';
 import { Url } from '../../constant';
+import axios from 'axios';
 
 export default function BookForm() {
   const { id } = useParams();
@@ -19,6 +20,7 @@ export default function BookForm() {
   const [userAppointments, setUserAppointments] = useState([]);
   const [userById, setUserById] = useState([]);
   const [loading, setLoading] = useState(false);
+
 
 
   const formatDate = (dateString) => {
@@ -35,31 +37,40 @@ export default function BookForm() {
     fetchUserById();
   }, []); // Se ejecuta solo una vez al cargar el componente
 
+
+  //muestra lista de citas
   const fetchUserAppointments = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${Url}/clientes/${id}/citas`);
+      const response = await fetch(`${Url}/clients/${id}/appointment`);
       if (!response.ok) {
         throw new Error('Error al obtener citas del usuario');
       }
-      const data = await response.json();
-      setUserAppointments(data);
+      console.log('finnish loading')
+      const responseData = await response.json();
+      setUserAppointments(responseData);
+      //console.log(responseData)
+
+
     } catch (error) {
       console.error('Error:', error);
     } finally {
-      setLoading(false); // Desactivar loader al completar la carga de citas
+      setLoading(false);
+
     }
   };
 
+  // muestra nombre de cliente
   const fetchUserById = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${Url}/clientes/${id}`);
+      const response = await fetch(`${Url}/clients/${id}`);
       if (!response.ok) {
         throw new Error('Error al obtener citas del usuario');
       }
-      const data = await response.json();
-      setUserById(data);
+      const responseData = await response.json();
+      setUserById(responseData);
+
     } catch (error) {
       console.error('Error:', error);
     } finally {
@@ -67,9 +78,10 @@ export default function BookForm() {
     }
   };
 
+
   const handleDeleteAppointment = async (appointmentId) => {
     try {
-      const response = await fetch(`${Url}/citas/${appointmentId}`, {
+      const response = await fetch(`${Url}/appointment/${appointmentId}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
@@ -82,11 +94,12 @@ export default function BookForm() {
     }
   };
 
+  //submit de nueva cita
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${Url}/guardar-cita`, {
+      const response = await fetch(`${Url}/appointment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,7 +108,6 @@ export default function BookForm() {
           client_id: id,
           visit_day: visitDay,
           start_hour: startHour,
-          duration: duration,
           comment: comment,
         }),
       });
@@ -105,8 +117,9 @@ export default function BookForm() {
       }
 
       const data = await response.json();
+
+      setSavedData(data);
       console.log(data);
-      setSavedData(data.data);
       fetchUserAppointments(); // Actualizar la lista de citas después de guardar una nueva cita
     } catch (error) {
       console.error('Error:', error);
@@ -120,7 +133,7 @@ export default function BookForm() {
         <Col md='auto'>
           <h3 className='text-center mt-5'>
             Nueva
-            <small className="text-body-secondary"> Visita de {userById.name} {userById.lastName}</small>
+            <small className="text-body-secondary"> Visita de {userById.name} {userById.lastname}</small>
           </h3>
           <hr />
           <form onSubmit={handleSubmit}>
@@ -146,17 +159,6 @@ export default function BookForm() {
               />
             </InputGroup>
 
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">
-                Duración
-              </InputGroup.Text>
-              <Form.Control
-                aria-label="Duración"
-                aria-describedby="inputGroup-sizing-default"
-                type="number" min="0.5" max="24" step=".5" name="duration" id="duration" value={duration} onChange={(e) => setDuration(e.target.value)} required
-              />
-            </InputGroup>
-
             <InputGroup>
               <InputGroup.Text>Notas</InputGroup.Text>
               <Form.Control as="textarea" aria-label="Notas" value={comment} onChange={(e) => setComment(e.target.value)} name="postContent" rows={4} cols={40} />
@@ -171,37 +173,36 @@ export default function BookForm() {
       <Row>
         <h3 className='text-center mt-5'>
           Visitas
-          <small className="text-body-secondary">  hechas por {userById.name} {userById.lastName}</small>
+          <small className="text-body-secondary">  hechas por {userById.name} {userById.lastname}</small>
         </h3>
         <hr />
         {loading ? <Spinner className='text-center' animation="grow" variant="dark" /> : <>
 
           <ul>
             {userAppointments.length < 1 ? <p className='text-center text-secondary'>No hay visitas</p> :
-              userAppointments.map((appointment) => (
-                <Table key={appointment.id} responsive striped bordered hover>
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Día de visita</th>
-                      <th>Hora de inicio</th>
-                      <th>Duración</th>
-                      <th>Comentario</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody >
-                    <tr>
-                      <td>{appointment.id}</td>
-                      <td>{formatDate(appointment.visit_day)}</td>
-                      <td>{appointment.start_hour}</td>
-                      <td>{appointment.duration} horas</td>
-                      <td>{appointment.comment}</td>
-                      <td className='text-center'> <Button variant='danger' onClick={() => handleDeleteAppointment(appointment.id)}>Eliminar</Button></td>
-                    </tr>
-                  </tbody>
-                </Table>
-              ))}
+              userAppointments.map(item => {
+                return (
+                  <Table key={item.id} responsive striped bordered hover>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Día de visita</th>
+                        <th>Hora de inicio</th>
+                        <th>Comentario</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody >
+                      <tr>
+                        <td>{item.id}</td>
+                        <td>{formatDate(item.visit_day)}</td>
+                        <td>{item.start_hour}</td>
+                        <td>{item.comment}</td>
+                        <td className='text-center'> <Button variant='danger' onClick={() => handleDeleteAppointment(item.id)}>Eliminar</Button></td>
+                      </tr>
+                    </tbody>
+                  </Table>)
+              })}
           </ul>
 
         </>
