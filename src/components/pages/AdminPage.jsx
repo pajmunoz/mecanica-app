@@ -45,6 +45,7 @@ export default function AdminPage({ handleLogout, username }) {
   const handleSearch = (searchTerm) => {
     const filteredClients = clientes.filter(client =>
       client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.lastname.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
       client.plate.toLowerCase().includes(searchTerm.toLowerCase())
