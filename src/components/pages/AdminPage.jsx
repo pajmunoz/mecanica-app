@@ -43,7 +43,12 @@ export default function AdminPage({ handleLogout, username }) {
   }, []); // Se ejecuta solo una vez al montar el componente
 
   const handleSearch = (searchTerm) => {
-    const filteredClients = clientes.filter(client => client.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    const filteredClients = clientes.filter(client =>
+      client.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.model.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      client.plate.toLowerCase().includes(searchTerm.toLowerCase())
+    );
     setCurrentClients(filteredClients);
   };
 
