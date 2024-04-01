@@ -42,7 +42,9 @@ export default function ClientList({ data, onDelete, index }) {
         throw new Error('Error al obtener cantidad de citas');
       }
       const responseData = await response.json();
-      setCitaCount(responseData.data);
+      //console.log(response)
+      setCitaCount(responseData);
+    
       
     } catch (error) {
       console.error('Error:', error);
@@ -85,7 +87,7 @@ export default function ClientList({ data, onDelete, index }) {
                     <td>{formatDate(data.oil_date)}</td>
                     <td>{<input type="checkbox" checked={data.notify} readOnly></input>}</td>
                     {data && (
-                      <td>{citaCount}</td>
+                      <td>{citaCount.appointment_count}</td>
                       
                     )}
 
