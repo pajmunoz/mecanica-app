@@ -10,6 +10,7 @@ import CreateClientForm from './components/forms/CreateClientForm';
 import ErrorPage from './components/pages/ErrorPage';
 import Header from './components/Header';
 import Container from 'react-bootstrap/Container';
+import ContactPage from  './components/pages/ContactPage';
 
 export default function MyRouter() {
     const [loggedInUser, setLoggedInUser] = useState('');
@@ -77,7 +78,7 @@ export default function MyRouter() {
 
     return (
         <Router> {/* Asegúrate de envolver todo en un componente Router */}
-        <Header />
+        <Header isAuthenticated={isAuthenticated} />
         <Container>
             <Routes>
                 <Route exact path="/" element={<MainPage />} />
@@ -89,11 +90,14 @@ export default function MyRouter() {
                         <Route path="/book/:id" element={<BookForm />} />
                         <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit} />} />
                         <Route path="/createClient" element={<CreateClientForm />} />
+                        
                     </>
                 ) : (
                     <Route path="/" element={<MainPage />} />
+                    
                 )}
                 <Route path="*" element={<ErrorPage />} />
+                <Route path="/contact" element={<ContactPage />} />
             </Routes>
             </Container>
         </Router>
