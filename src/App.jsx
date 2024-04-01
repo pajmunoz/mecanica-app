@@ -16,15 +16,11 @@ function App() {
     <>
 
 
-        <Row>
-
-          <Col>
+ 
 
             <MyRouter />
 
-          </Col>
-   
-        </Row>
+    
 
       <Footer />
 
