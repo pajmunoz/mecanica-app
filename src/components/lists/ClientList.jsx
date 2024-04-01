@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom'  
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
+import { useNavigate } from 'react-router-dom';
+import {Table, Button, Row, Col, Card} from 'react-bootstrap';
 import { Url } from '../../constant';
 
 export default function ClientList({ data, onDelete, index }) {
@@ -16,7 +11,7 @@ export default function ClientList({ data, onDelete, index }) {
     console.log('hi')
     //setEditingUserId(userId);
     // Aquí puedes implementar la lógica para abrir un formulario de edición o cualquier otra interfaz de usuario
-    window.location = `/edit/${data.id}`
+    navigate(`/edit/${data.id}`, { replace: true })
   };
 
   const formatDate = (dateString) => {
@@ -44,8 +39,8 @@ export default function ClientList({ data, onDelete, index }) {
       const responseData = await response.json();
       //console.log(response)
       setCitaCount(responseData);
-    
-      
+
+
     } catch (error) {
       console.error('Error:', error);
     }
@@ -88,7 +83,7 @@ export default function ClientList({ data, onDelete, index }) {
                     <td>{<input type="checkbox" checked={data.notify} readOnly></input>}</td>
                     {data && (
                       <td>{citaCount.appointment_count}</td>
-                      
+
                     )}
 
                   </tr>
@@ -101,14 +96,14 @@ export default function ClientList({ data, onDelete, index }) {
           <Row>
             <Col>
             </Col>
-      
+
             <Col md='auto'>
               <Row>
 
                 <Col>
-                  
-                  <Button type='button'  variant='primary' onClick={() => navigate(`/book/${data.id}`)}>Visitas</Button>
-             
+
+                  <Button type='button' variant='primary' onClick={() => navigate(`/book/${data.id}`)}>Visitas</Button>
+
                 </Col>
                 <Col>
                   <Button variant='success' onClick={handleEditUser}>Editar</Button>

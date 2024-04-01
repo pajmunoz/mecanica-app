@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Spinner from 'react-bootstrap/Spinner';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import {Button, Form, InputGroup, Row, Col, Spinner} from 'react-bootstrap';
 import { Url } from '../../constant';
 
 export default function EditClientForm() {
+  const navigate = useNavigate()
   const [message, setMessage] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -27,7 +23,7 @@ export default function EditClientForm() {
   });
 
   const handleCancel = async (e) => {
-    window.location.replace('/admin')
+    navigate('/admin', { replace: true })
   }
 
   const formatDate = (dateString) => {
@@ -92,7 +88,8 @@ export default function EditClientForm() {
         setShowSuccessMessage(false);
       }, 3000);
       setTimeout(() => {
-        window.location.replace('/admin')
+        navigate('/admin', { replace: true })
+
       }, 2000);
 
       if (!response.ok) {
@@ -218,7 +215,9 @@ export default function EditClientForm() {
           }
 
           <hr />
-          <Button className='w-100 my-2' variant='secondary' onClick={() => window.location = '/admin'}>Cancelar</Button>
+          <Link to='/admin'>
+            <Button className='w-100 my-2' variant='secondary'>Cancelar</Button>
+          </Link>
           {showSuccessMessage && <h1>{message}</h1>}
 
         </Col>
