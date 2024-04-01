@@ -93,7 +93,7 @@ export default function AdminPage({ handleLogout, username }) {
       ) : (
         <>
           <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
-            {recentClients.length > 1 ? recentClients.map((client, index) => (
+            {recentClients.length > 0 ? recentClients.map((client, index) => (
               <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
             )) : 'No hay resultados para mostrar.'}
           </div>
@@ -117,7 +117,7 @@ export default function AdminPage({ handleLogout, username }) {
       ) : (
         <>
           <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
-            {currentClients.length > 1 ? currentClients.map((client, index) => (
+            {currentClients.length > 0 ? currentClients.map((client, index) => (
               <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
             )) : 'No hay resultados para mostrar.'}
           </div>
