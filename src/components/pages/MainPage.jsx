@@ -1,7 +1,5 @@
-import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { Row, Col, Button } from 'react-bootstrap';
 import logo from '../../assets/logo-fede.png'
 
 
@@ -10,7 +8,7 @@ export default function MainPage() {
     <>
       <Row className='mt-5'>
         <Col></Col>
-        <Col md='auto'  className='text-center mh-100' >
+        <Col md='auto' className='text-center mh-100' >
           <figure className='w-50 mx-auto'>
             <img className='w-100' src={logo} alt="" />
           </figure>

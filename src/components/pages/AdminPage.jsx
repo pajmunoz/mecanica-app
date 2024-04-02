@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ClientList from "../lists/ClientList"
-import { Row, Col, Button, Spinner, Pagination } from 'react-bootstrap';
+import { Row, Col, Button, Spinner, Pagination, Toast } from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link } from 'react-router-dom';
 import SearchClient from '../forms/SearchForm';
@@ -9,11 +9,14 @@ export default function AdminPage({ handleLogout, username }) {
   const [loading, setLoading] = useState(true);
   const [clientes, setClientes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [clientsPerPage] = useState(4);
+  const [clientsPerPage, setClientsPerPage] = useState(4);
   const [currentClients, setCurrentClients] = useState([]);
   const [recentClients, setRecentClients] = useState([]);
   const [clientCount, setClientCount] = useState(0);
   const totalPages = Math.ceil(clientCount / clientsPerPage);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [show, setShow] = useState(false);
+  const [message, setMessage] = useState('');
 
   useEffect(() => {
     const indexOfLastClient = currentPage * clientsPerPage;
@@ -22,27 +25,29 @@ export default function AdminPage({ handleLogout, username }) {
     setCurrentClients(displayedClients);
   }, [currentPage, clientsPerPage, clientes]);
 
-  // Función para obtener los datos del servidor
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`${Url}/clients`);
         const data = await response.json();
-        const sortedData = data.sort((a, b) => a.id - b.id);
+        const sortedData = data.sort((a, b) => {
+          if (!a || !b) return 0;
+          return a.id - b.id;
+        });
         setClientes(sortedData);
         setClientCount(sortedData.length);
         const lastAddedClients = sortedData.slice(-2).reverse();
         setRecentClients(lastAddedClients);
 
-        setLoading(false); // Cambiar estado a false después de cargar los datos
+        setLoading(false);
       } catch (error) {
         console.error('Error al obtener datos del servidor:', error);
-        setLoading(false); // Cambiar estado a false en caso de error también
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, []); // Se ejecuta solo una vez al montar el componente
+  }, []);
 
   const handleSearch = (searchTerm) => {
     const filteredClients = clientes.filter(client =>
@@ -54,7 +59,13 @@ export default function AdminPage({ handleLogout, username }) {
     );
     setCurrentClients(filteredClients);
     setClientCount(filteredClients.length);
+    setCurrentPage(1);
   };
+
+  const handleMessage = (message) => {
+    setMessage(message)
+    setShow(true)
+  }
 
   const handleDeleteClient = async (clientId) => {
     try {
@@ -64,16 +75,19 @@ export default function AdminPage({ handleLogout, username }) {
       if (!response.ok) {
         throw new Error('Error al eliminar cliente');
       }
-      // Actualizar la lista de clientes después de eliminar el cliente
       const updatedClientes = clientes.filter(cliente => cliente.id !== clientId);
+
+      setShowSuccessMessage(true);
+
       setClientes(updatedClientes);
       setLoading(false);
       setClientCount(currentClientCount => currentClientCount - 1);
     } catch (error) {
       console.error('Error al eliminar cliente:', error);
+      handleMessage('Error al actualizar datos del cliente!')
       setLoading(false);
-      // Mostrar mensaje de error al usuario u otra acción necesaria
     }
+    handleMessage('Cliente Borrado Exitosamente!')
   };
 
   return (
@@ -89,13 +103,13 @@ export default function AdminPage({ handleLogout, username }) {
       </Row>
       <Row>
         <Col>
-          <Button variant="secondary" onClick={handleLogout}>Cerrar Sesion</Button>
+          <Link to='/'>
+            <Button variant="secondary" onClick={handleLogout}>Cerrar Sesion</Button>
+          </Link>
         </Col>
       </Row>
 
       <SearchClient handleSearch={handleSearch} />
-
-
 
       <Row className='mt-5'>
         <Col><h5>Lista de Clientes</h5> <span>Clientes mostrados: {clientCount}</span></Col>
@@ -115,7 +129,7 @@ export default function AdminPage({ handleLogout, username }) {
         <>
           <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
             {currentClients.length > 0 ? currentClients.map((client, index) => (
-              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
+              <ClientList key={client.id} data={client} onDelete={handleDeleteClient} index={index} />
             )) : 'No hay resultados para mostrar.'}
           </div>
           {totalPages > 1 && currentClients.length >= clientsPerPage - 1 && (
@@ -146,6 +160,11 @@ export default function AdminPage({ handleLogout, username }) {
           </div>
         </>
       )}
+      {showSuccessMessage && (
+        <Toast className='bg-danger position-fixed top-50 start-50 translate-middle' onClose={() => setShow(false)} position="top-start" show={show} delay={3000} autohide>
+          <Toast.Body className='text-white text-center'>{message} ✓</Toast.Body>
+        </Toast>
+      )}
     </>
-  )
+  );
 }

@@ -8,7 +8,6 @@ export default function ClientList({ data, onDelete, index }) {
   const [citaCount, setCitaCount] = useState(0);
   const handleEditUser = (userId) => {
     // Guardar el ID del usuario que se está editando en el estado local
-    console.log('hi')
     //setEditingUserId(userId);
     // Aquí puedes implementar la lógica para abrir un formulario de edición o cualquier otra interfaz de usuario
     navigate(`/edit/${data.id}`, { replace: true })
@@ -21,7 +20,6 @@ export default function ClientList({ data, onDelete, index }) {
 
   const handleDelete = () => {
     onDelete(data.id);
-    console.log('delete')
   }
 
   useEffect(() => {
@@ -58,14 +56,13 @@ export default function ClientList({ data, onDelete, index }) {
                     <th>#</th>
                     <th>Nombre</th>
                     <th>Apellido</th>
-                    <th>Correo</th>
+                    <th>Teléfono</th>
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Año</th>
                     <th>Placa</th>
                     <th>Fecha aceite</th>
-                    <th>Notificar</th>
-                    <th># de Citas</th>
+                    <th>Visitas</th>
 
                   </tr>
                 </thead>
@@ -74,13 +71,12 @@ export default function ClientList({ data, onDelete, index }) {
                     <td>{data.id}</td>
                     <td>{data.name}</td>
                     <td>{data.lastname}</td>
-                    <td>{data.email}</td>
+                    <td>{data.tel}</td>
                     <td>{data.brand}</td>
                     <td>{data.model}</td>
                     <td>{data.year}</td>
                     <td>{data.plate}</td>
                     <td>{formatDate(data.oil_date)}</td>
-                    <td>{<input type="checkbox" checked={data.notify} readOnly></input>}</td>
                     {data && (
                       <td>{citaCount.appointment_count}</td>
 

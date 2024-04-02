@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import {Button, Form, InputGroup, Row, Col, Spinner} from 'react-bootstrap';
+import { Button, Form, InputGroup, Row, Col, Spinner, Toast } from 'react-bootstrap';
 import { Url } from '../../constant';
 
 export default function EditClientForm() {
   const navigate = useNavigate()
+  const [show, setShow] = useState(false);
   const [message, setMessage] = useState(null);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -13,18 +14,14 @@ export default function EditClientForm() {
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
-    email: '',
+    tel: '',
     model: '',
     year: '',
     brand: '',
     plate: '',
-    oil_date: '',
-    notify: 0
+    oil_date: ''
   });
 
-  const handleCancel = async (e) => {
-    navigate('/admin', { replace: true })
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -44,13 +41,12 @@ export default function EditClientForm() {
         setFormData({
           name: data.name,
           lastname: data.lastname,
-          email: data.email,
+          tel: data.tel,
           model: data.model,
           year: data.year,
           brand: data.brand,
           plate: data.plate,
-          oil_date: formatDate(data.oil_date),
-          notify: data.notify
+          oil_date: formatDate(data.oil_date)
         });
       } catch (error) {
         console.error('Error al obtener datos del servidor:', error);
@@ -71,6 +67,7 @@ export default function EditClientForm() {
 
   const handleMessage = (message) => {
     setMessage(message)
+    setShow(true)
   }
 
   const handleSubmit = async (e) => {
@@ -84,9 +81,7 @@ export default function EditClientForm() {
         body: JSON.stringify(formData),
       });
       setShowSuccessMessage(true);
-      setTimeout(() => {
-        setShowSuccessMessage(false);
-      }, 3000);
+
       setTimeout(() => {
         navigate('/admin', { replace: true })
 
@@ -141,12 +136,12 @@ export default function EditClientForm() {
 
               <InputGroup className="mb-3">
                 <InputGroup.Text id="inputGroup-sizing-default">
-                  Correo
+                  Teléfono
                 </InputGroup.Text>
                 <Form.Control
-                  aria-label="Email"
+                  aria-label="Telefono"
                   aria-describedby="inputGroup-sizing-default"
-                  required type="mail" name="email" placeholder="***@****.com" value={formData.email} onChange={handleChange}
+                  required type="phone" name="tel" placeholder="2364 12 3456" value={formData.tel} onChange={handleChange}
                 />
               </InputGroup>
 
@@ -205,12 +200,8 @@ export default function EditClientForm() {
                 />
               </InputGroup>
 
-              <Form.Check
-                type="switch" checked={formData.notify === 1} name='notify' onChange={handleChange} label='Notificar al cliente'
-              />
 
-
-              <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
+              <Button className='w-100 my-2' variant='primary' type="submit">Actualizar</Button>
             </form>
           }
 
@@ -218,8 +209,11 @@ export default function EditClientForm() {
           <Link to='/admin'>
             <Button className='w-100 my-2' variant='secondary'>Cancelar</Button>
           </Link>
-          {showSuccessMessage && <h1>{message}</h1>}
-
+          {showSuccessMessage && (
+            <Toast className='position-fixed top-50 start-50 translate-middle' bg='success' onClose={() => setShow(false)} position="top-start" show={show} delay={3000} autohide>
+              <Toast.Body className='text-white text-center'>{message} ✓</Toast.Body>
+            </Toast>
+          )}
         </Col>
         <Col></Col>
       </Row>
