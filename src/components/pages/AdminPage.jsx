@@ -91,9 +91,10 @@ export default function AdminPage({ handleLogout, username }) {
   };
 
   const handleLogOutClick = () => {
-    () => setTimeout(() => {
-      handleLogout
-    }, 3000)
+    setTimeout(() => {
+      handleLogout()
+      console.log('logout')
+    }, 1000)
   }
 
   return (

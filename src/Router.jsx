@@ -32,7 +32,11 @@ export default function MyRouter() {
             timeoutId = setTimeout(() => {
                 // Lógica para cerrar la sesión después de 2 minutos de inactividad
                 setIsAuthenticated(false);
-                window.location = '/';
+                setTimeout(() => {
+                    window.location = '/';
+                    console.log('logout')
+                }, 1000)
+
                 localStorage.clear()
             }, .5 * 60 * 1000); // 2 minutos en milisegundos
         };
