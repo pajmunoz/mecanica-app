@@ -16,46 +16,15 @@ export default function MyRouter() {
     const [loggedInUser, setLoggedInUser] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const storedUsername = localStorage.getItem('username');
-    const [editingUserId, setEditingUserId] = useState(null);
 
-    /*useEffect(() => {
+    useEffect(() => {
         const storedIsAuthenticated = localStorage.getItem('isAuthenticated');
 
         if (storedIsAuthenticated === 'true' && storedUsername) {
             setIsAuthenticated(true);
             setLoggedInUser(storedUsername);
         }
-        let timeoutId;
-
-        const handleActivity = () => {
-            clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
-            timeoutId = setTimeout(() => {
-                window.location = '/';
-                // Lógica para cerrar la sesión después de 2 minutos de inactividad
-
-
-                setIsAuthenticated(false);
-                localStorage.clear()
-                console.log('logout')
-
-
-
-            }, .5 * 60 * 1000); // 2 minutos en milisegundos
-        };
-
-        handleActivity(); // Llama a la función para iniciar el temporizador al principio
-
-        // Configura event listeners para detectar actividad
-        window.addEventListener('mousemove', handleActivity);
-        window.addEventListener('keydown', handleActivity);
-
-        // Limpia los event listeners al desmontar el componente
-        return () => {
-            window.removeEventListener('mousemove', handleActivity);
-            window.removeEventListener('keydown', handleActivity);
-            clearTimeout(timeoutId);
-        };
-    }, []);*/
+    }, [])
 
     const handleLogin = () => {
         // Lógica para autenticar al usuario
