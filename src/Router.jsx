@@ -30,14 +30,16 @@ export default function MyRouter() {
         const handleActivity = () => {
             clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
             timeoutId = setTimeout(() => {
+                window.location = '/';
                 // Lógica para cerrar la sesión después de 2 minutos de inactividad
-                setIsAuthenticated(false);
+
                 setTimeout(() => {
-                    window.location = '/';
+                    setIsAuthenticated(false);
+                    localStorage.clear()
                     console.log('logout')
                 }, 1000)
 
-                localStorage.clear()
+
             }, .5 * 60 * 1000); // 2 minutos en milisegundos
         };
 
