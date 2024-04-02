@@ -13,6 +13,7 @@ export default function AdminPage({ handleLogout, username }) {
   const [currentClients, setCurrentClients] = useState([]);
   const [recentClients, setRecentClients] = useState([]);
   const [clientCount, setClientCount] = useState(0);
+  const totalPages = Math.ceil(clientCount / clientsPerPage);
 
   useEffect(() => {
     const indexOfLastClient = currentPage * clientsPerPage;
@@ -95,19 +96,6 @@ export default function AdminPage({ handleLogout, username }) {
       <SearchClient handleSearch={handleSearch} />
 
 
-      <h5 className='mt-5'>Clientes agregados recientemente</h5>
-      <hr />
-      {loading ? (
-        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" />
-      ) : (
-        <>
-          <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
-            {recentClients.length > 0 ? recentClients.map((client, index) => (
-              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
-            )) : 'No hay resultados para mostrar.'}
-          </div>
-        </>
-      )}
 
       <Row className='mt-5'>
         <Col><h5>Lista de Clientes</h5> <span>Clientes mostrados: {clientCount}</span></Col>
@@ -130,17 +118,33 @@ export default function AdminPage({ handleLogout, username }) {
               <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
             )) : 'No hay resultados para mostrar.'}
           </div>
-          <Pagination className='mt-5'>
-            <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
-            {[...Array(Math.ceil(clientes.length / clientsPerPage)).keys()].map((num) => (
-              <Pagination.Item key={num + 1} active={num + 1 === currentPage} onClick={() => setCurrentPage(num + 1)}>
-                {num + 1}
-              </Pagination.Item>
-            ))}
-            <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === Math.ceil(clientes.length / clientsPerPage)} />
-          </Pagination>
+          {totalPages > 1 && currentClients.length >= clientsPerPage - 1 && (
+            <Pagination className='mt-3'>
+              <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
+              {[...Array(totalPages).keys()].map((num) => (
+                <Pagination.Item key={num + 1} active={num + 1 === currentPage} onClick={() => setCurrentPage(num + 1)}>
+                  {num + 1}
+                </Pagination.Item>
+              ))}
+              <Pagination.Next onClick={() => setCurrentPage(currentPage + 1)} disabled={currentPage === totalPages} />
+            </Pagination>
+          )}
         </>
 
+      )}
+
+      <h5 className='mt-5'>Clientes agregados recientemente</h5>
+      <hr />
+      {loading ? (
+        <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" />
+      ) : (
+        <>
+          <div className="border border-secondary-subtle p-3 bg-secondary-subtle">
+            {recentClients.length > 0 ? recentClients.map((client, index) => (
+              <ClientList key={index} data={client} onDelete={handleDeleteClient} index={index} />
+            )) : 'No hay resultados para mostrar.'}
+          </div>
+        </>
       )}
     </>
   )
