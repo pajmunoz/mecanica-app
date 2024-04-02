@@ -12,6 +12,7 @@ export default function AdminPage({ handleLogout, username }) {
   const [clientsPerPage] = useState(4);
   const [currentClients, setCurrentClients] = useState([]);
   const [recentClients, setRecentClients] = useState([]);
+  const [clientCount, setClientCount] = useState(0);
 
   useEffect(() => {
     const indexOfLastClient = currentPage * clientsPerPage;
@@ -28,7 +29,7 @@ export default function AdminPage({ handleLogout, username }) {
         const data = await response.json();
         const sortedData = data.sort((a, b) => a.id - b.id);
         setClientes(sortedData);
-
+        setClientCount(sortedData.length);
         const lastAddedClients = sortedData.slice(-2).reverse();
         setRecentClients(lastAddedClients);
 
@@ -51,6 +52,7 @@ export default function AdminPage({ handleLogout, username }) {
       client.plate.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setCurrentClients(filteredClients);
+    setClientCount(filteredClients.length);
   };
 
   const handleDeleteClient = async (clientId) => {
@@ -65,6 +67,7 @@ export default function AdminPage({ handleLogout, username }) {
       const updatedClientes = clientes.filter(cliente => cliente.id !== clientId);
       setClientes(updatedClientes);
       setLoading(false);
+      setClientCount(currentClientCount => currentClientCount - 1);
     } catch (error) {
       console.error('Error al eliminar cliente:', error);
       setLoading(false);
@@ -107,7 +110,7 @@ export default function AdminPage({ handleLogout, username }) {
       )}
 
       <Row className='mt-5'>
-        <Col><h5>Lista de Clientes</h5></Col>
+        <Col><h5>Lista de Clientes</h5> <span>Clientes mostrados: {clientCount}</span></Col>
         <Col className='text-end'>
           <Link to={'/createClient'}>
             <Button variant="primary">
