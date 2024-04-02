@@ -10,7 +10,7 @@ import CreateClientForm from './components/forms/CreateClientForm';
 import ErrorPage from './components/pages/ErrorPage';
 import Header from './components/Header';
 import Container from 'react-bootstrap/Container';
-import ContactPage from  './components/pages/ContactPage';
+import ContactPage from './components/pages/ContactPage';
 
 export default function MyRouter() {
     const [loggedInUser, setLoggedInUser] = useState('');
@@ -26,29 +26,35 @@ export default function MyRouter() {
             setLoggedInUser(storedUsername);
         }
         let timeoutId;
-        /* 
-                const handleActivity = () => {
-                    clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
-                    timeoutId = setTimeout(() => {
-                        // Lógica para cerrar la sesión después de 2 minutos de inactividad
-                        setIsAuthenticated(false);
-                        window.location = '/';
-                        localStorage.clear()
-                    }, .5 * 60 * 1000); // 2 minutos en milisegundos
-                };
-        
-                handleActivity(); // Llama a la función para iniciar el temporizador al principio
-        
-                // Configura event listeners para detectar actividad
-                window.addEventListener('mousemove', handleActivity);
-                window.addEventListener('keydown', handleActivity);
-        
-                // Limpia los event listeners al desmontar el componente
-                return () => {
-                    window.removeEventListener('mousemove', handleActivity);
-                    window.removeEventListener('keydown', handleActivity);
-                    clearTimeout(timeoutId); 
-                };*/
+
+        const handleActivity = () => {
+            clearTimeout(timeoutId); // Reinicia el temporizador cada vez que hay actividad
+            timeoutId = setTimeout(() => {
+                window.location = '/';
+                // Lógica para cerrar la sesión después de 2 minutos de inactividad
+
+
+                setIsAuthenticated(false);
+                localStorage.clear()
+                console.log('logout')
+
+
+
+            }, .5 * 60 * 1000); // 2 minutos en milisegundos
+        };
+
+        handleActivity(); // Llama a la función para iniciar el temporizador al principio
+
+        // Configura event listeners para detectar actividad
+        window.addEventListener('mousemove', handleActivity);
+        window.addEventListener('keydown', handleActivity);
+
+        // Limpia los event listeners al desmontar el componente
+        return () => {
+            window.removeEventListener('mousemove', handleActivity);
+            window.removeEventListener('keydown', handleActivity);
+            clearTimeout(timeoutId);
+        };
     }, []);
 
     const handleLogin = () => {
@@ -66,7 +72,7 @@ export default function MyRouter() {
         // Lógica para cerrar la sesión del usuario
         setIsAuthenticated(false);
         localStorage.clear()
-      
+
     };
 
     const handleEdit = async (e) => {
@@ -78,27 +84,27 @@ export default function MyRouter() {
 
     return (
         <Router> {/* Asegúrate de envolver todo en un componente Router */}
-        <Header isAuthenticated={isAuthenticated} />
-        <Container>
-            <Routes>
-                <Route exact path="/" element={<MainPage />} />
-                <Route path="/login" element={<LoginForm handleLogin={handleLogin} loggedUser={handleLoggedUser} />} />
-                {isAuthenticated ? (
-                    <>
-                        <Route path="/admin" element={<AdminPage handleLogout={handleLogout} username={loggedInUser} />} />
+            <Header isAuthenticated={isAuthenticated} />
+            <Container>
+                <Routes>
+                    <Route exact path="/" element={<MainPage />} />
+                    <Route path="/login" element={<LoginForm handleLogin={handleLogin} loggedUser={handleLoggedUser} />} />
+                    {isAuthenticated ? (
+                        <>
+                            <Route path="/admin" element={<AdminPage handleLogout={handleLogout} username={loggedInUser} />} />
 
-                        <Route path="/book/:id" element={<BookForm />} />
-                        <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit} />} />
-                        <Route path="/createClient" element={<CreateClientForm />} />
-                        
-                    </>
-                ) : (
-                    <Route path="/" element={<MainPage />} />
-                    
-                )}
-                <Route path="*" element={<ErrorPage />} />
-                <Route path="/contact" element={<ContactPage />} />
-            </Routes>
+                            <Route path="/book/:id" element={<BookForm />} />
+                            <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit} />} />
+                            <Route path="/createClient" element={<CreateClientForm />} />
+
+                        </>
+                    ) : (
+                        <Route path="/" element={<MainPage />} />
+
+                    )}
+                    <Route path="*" element={<ErrorPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                </Routes>
             </Container>
         </Router>
     );
