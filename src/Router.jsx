@@ -18,7 +18,7 @@ export default function MyRouter() {
     const storedUsername = localStorage.getItem('username');
     const [editingUserId, setEditingUserId] = useState(null);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const storedIsAuthenticated = localStorage.getItem('isAuthenticated');
 
         if (storedIsAuthenticated === 'true' && storedUsername) {
@@ -55,7 +55,7 @@ export default function MyRouter() {
             window.removeEventListener('keydown', handleActivity);
             clearTimeout(timeoutId);
         };
-    }, []);
+    }, []);*/
 
     const handleLogin = () => {
         // Lógica para autenticar al usuario
