@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {Button, Form, InputGroup, Row, Col, Toast} from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -11,7 +7,7 @@ const CreateClientForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
-    email: '',
+    tel: '',
     model: '',
     year: '',
     brand: '',
@@ -19,6 +15,7 @@ const CreateClientForm = () => {
     oil_date: '',
     notify: 0
   });
+  const [show, setShow] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
@@ -27,6 +24,10 @@ const CreateClientForm = () => {
     const newValue = type === 'checkbox' ? (checked ? 1 : 0) : value; // Manejar el valor del checkbox como booleano
     setFormData({ ...formData, [name]: newValue });
   };
+  const handleMessage = (message) => {
+    setMessage(message)
+    setShow(true)
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,23 +39,27 @@ const CreateClientForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData,
-          notify: formData.notify
+          ...formData
         }),
       });
       const data = await response.json();
-      navigate('/admin', { replace: true }),
+
       setShowSuccessMessage(true);
-      setMessage('Cliente creado exitosamente');
       setTimeout(() => {
         setShowSuccessMessage(false);
-        setMessage('');
       }, 3000);
 
+      setTimeout(() => {
+        navigate('/admin', { replace: true })
+
+      }, 2000);
+
     } catch (error) {
-      console.error('Error al crear el cliente:', error);
+      console.error('Error al crear el cliente:', error),
+        handleMessage('Error al actualizar datos del cliente!')
 
     }
+    handleMessage('Cliente Agregado Exitosamente!')
   };
 
   return (
@@ -94,12 +99,12 @@ const CreateClientForm = () => {
 
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">
-                Correo
+                Teléfono
               </InputGroup.Text>
               <Form.Control
-                aria-label="Email"
+                aria-label="tel"
                 aria-describedby="inputGroup-sizing-default"
-                required type="mail" name="email" placeholder="***@****.com" value={formData.email} onChange={handleChange}
+                required type="phone" name="tel"  placeholder="2364 12 3456" value={formData.tel} onChange={handleChange}
               />
             </InputGroup>
 
@@ -158,19 +163,19 @@ const CreateClientForm = () => {
               />
             </InputGroup>
 
-            <Form.Check
-              type="switch" checked={formData.notify === 1} name='notify' onChange={handleChange} label='Notificar al cliente'
-            />
+            <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
 
-              <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
-   
           </form>
           <hr />
           <Link to={'/admin'}>
             <Button className='w-100 my-2' variant='secondary'>Cancelar</Button>
           </Link>
 
-          {showSuccessMessage && <h1>{message}</h1>}
+          {showSuccessMessage && (
+            <Toast className='bg-success position-fixed top-50 start-50 translate-middle' onClose={() => setShow(false)} position="top-start" show={show} delay={3000} autohide>
+              <Toast.Body className='text-white text-center'>{message} ✓</Toast.Body>
+            </Toast>
+          )}
 
         </Col>
         <Col></Col>

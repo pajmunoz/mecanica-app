@@ -66,7 +66,7 @@ export default function MyRouter() {
         // Lógica para cerrar la sesión del usuario
         setIsAuthenticated(false);
         localStorage.clear()
-        window.location = '/';
+      
     };
 
     const handleEdit = async (e) => {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import {Button, Form, InputGroup, Row, Col, Table, Spinner} from 'react-bootstrap';
+import { Button, Form, InputGroup, Row, Col, Table, Spinner } from 'react-bootstrap';
 import { Url } from '../../constant';
 import axios from 'axios';
 
@@ -40,7 +40,7 @@ export default function BookForm() {
       if (!response.ok) {
         throw new Error('Error al obtener citas del usuario');
       }
-      console.log('finnish loading')
+     
       const responseData = await response.json();
       setUserAppointments(responseData);
       //console.log(responseData)
@@ -113,7 +113,7 @@ export default function BookForm() {
       const data = await response.json();
 
       setSavedData(data);
-      console.log(data);
+ 
       fetchUserAppointments(); // Actualizar la lista de citas después de guardar una nueva cita
     } catch (error) {
       console.error('Error:', error);
@@ -141,18 +141,6 @@ export default function BookForm() {
                 type="date" name="visit_day" id="fechaVisita" value={visitDay} onChange={(e) => setVisitDay(e.target.value)} required
               />
             </InputGroup>
-
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="inputGroup-sizing-default">
-                Hora de Inicio
-              </InputGroup.Text>
-              <Form.Control
-                aria-label="Hora de Inicio"
-                aria-describedby="inputGroup-sizing-default"
-                type="time" name="start_hour" id="horaInicio" value={startHour} onChange={(e) => setStartHour(e.target.value)} required
-              />
-            </InputGroup>
-
             <InputGroup>
               <InputGroup.Text>Notas</InputGroup.Text>
               <Form.Control as="textarea" aria-label="Notas" value={comment} onChange={(e) => setComment(e.target.value)} name="postContent" rows={4} cols={40} />
@@ -181,7 +169,7 @@ export default function BookForm() {
                       <tr>
                         <th>#</th>
                         <th>Día de visita</th>
-                        <th>Hora de inicio</th>
+
                         <th>Comentario</th>
                         <th></th>
                       </tr>
@@ -190,7 +178,7 @@ export default function BookForm() {
                       <tr>
                         <td>{item.id}</td>
                         <td>{formatDate(item.visit_day)}</td>
-                        <td>{item.start_hour}</td>
+
                         <td>{item.comment}</td>
                         <td className='text-center'> <Button variant='danger' onClick={() => handleDeleteAppointment(item.id)}>Eliminar</Button></td>
                       </tr>
