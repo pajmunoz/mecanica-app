@@ -139,7 +139,7 @@ export default function AdminPage({ handleLogout, username }) {
               <ClientList key={client.id} data={client} onDelete={handleDeleteClient} index={index} />
             )) : 'No hay resultados para mostrar.'}
           </div>
-          {totalPages > 1 && currentClients.length >= clientsPerPage - 1 && (
+          {totalPages > 1 && currentClients.length > 0 && (
             <Pagination className='mt-3'>
               <Pagination.Prev onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1} />
               {[...Array(totalPages).keys()].map((num) => (
