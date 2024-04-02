@@ -104,7 +104,9 @@ export default function AdminPage({ handleLogout, username }) {
       <Row>
         <Col>
           <Link to='/'>
-            <Button variant="secondary" onClick={handleLogout}>Cerrar Sesion</Button>
+            <Button variant="secondary" onClick={() => setTimeout(() => {
+              handleLogout
+            }, 1000)}>Cerrar Sesion</Button>
           </Link>
         </Col>
       </Row>
