@@ -90,6 +90,12 @@ export default function AdminPage({ handleLogout, username }) {
     handleMessage('Cliente Borrado Exitosamente!')
   };
 
+  const handleLogOutClick = () => {
+    () => setTimeout(() => {
+      handleLogout
+    }, 3000)
+  }
+
   return (
 
     <>
@@ -104,9 +110,7 @@ export default function AdminPage({ handleLogout, username }) {
       <Row>
         <Col>
           <Link to='/'>
-            <Button variant="secondary" onClick={() => setTimeout(() => {
-              handleLogout
-            }, 1000)}>Cerrar Sesion</Button>
+            <Button variant="secondary" onClick={handleLogOutClick}>Cerrar Sesion</Button>
           </Link>
         </Col>
       </Row>
