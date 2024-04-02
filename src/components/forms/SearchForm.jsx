@@ -5,7 +5,9 @@ const SearchClient = ({ handleSearch }) => {
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleChange = (e) => {
+        const { value } = e.target;
         setSearchTerm(e.target.value);
+        handleSearch(value);
     };
 
     const handleSubmit = (e) => {
