@@ -16,8 +16,10 @@ export default function MyRouter() {
     const [loggedInUser, setLoggedInUser] = useState('');
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const storedUsername = localStorage.getItem('username');
+    const [userId, setUserId] = useState('');
 
     useEffect(() => {
+        console.log()
         const storedIsAuthenticated = localStorage.getItem('isAuthenticated');
 
         if (storedIsAuthenticated === 'true' && storedUsername) {
@@ -32,9 +34,11 @@ export default function MyRouter() {
         localStorage.setItem('isAuthenticated', 'true');
 
     };
-    const handleLoggedUser = (username) => {
+    const handleLoggedUser = (username, id) => {
         setLoggedInUser(username);
+        setUserId(id)
         localStorage.setItem('username', username);
+        localStorage.setItem('id', id);
 
     };
     const handleLogout = () => {
@@ -57,10 +61,10 @@ export default function MyRouter() {
             <Container>
                 <Routes>
                     <Route exact path="/" element={<MainPage />} />
-                    <Route path="/login" element={<LoginForm handleLogin={handleLogin} loggedUser={handleLoggedUser} />} />
+                    <Route path="/login" element={<LoginForm handleLogin={handleLogin} loggedUser={handleLoggedUser}/>} />
                     {isAuthenticated ? (
                         <>
-                            <Route path="/admin" element={<AdminPage handleLogout={handleLogout} username={loggedInUser} />} />
+                            <Route path="/admin" element={<AdminPage handleLogout={handleLogout} username={loggedInUser} userId={userId} />} />
 
                             <Route path="/book/:id" element={<BookForm />} />
                             <Route path="/edit/:id" element={<EditClientForm handleEdit={handleEdit} />} />
