@@ -14,6 +14,8 @@ const CreateClientForm = () => {
     plate: '',
     oil_date: '',
     user_id:localStorage.getItem('id'),
+    username:'',
+    password:'',
     notify: 0
   });
   const [show, setShow] = useState(false);
@@ -161,6 +163,28 @@ const CreateClientForm = () => {
                 aria-label="Aceite"
                 aria-describedby="inputGroup-sizing-default"
                 required type="date" name="oil_date" value={formData.oil_date} onChange={handleChange}
+              />
+            </InputGroup>
+            
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Usuario
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Username"
+                aria-describedby="inputGroup-sizing-default"
+                required type="text" name="username" value={`${formData.name}${formData.lastname.charAt(0).toUpperCase()}${formData.lastname.slice(1)}`} onChange={handleChange}
+              />
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Contraseña
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Password"
+                aria-describedby="inputGroup-sizing-default"
+                required type="text" name="password" value={formData.password} onChange={handleChange}
               />
             </InputGroup>
 
