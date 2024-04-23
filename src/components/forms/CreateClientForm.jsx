@@ -2,8 +2,10 @@ import { useState } from 'react';
 import {Button, Form, InputGroup, Row, Col, Toast} from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link, useNavigate } from 'react-router-dom';
+import PasswordGen from '../../tools/PasswordGen';
 
 const CreateClientForm = () => {
+  const password = PasswordGen()
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
@@ -184,7 +186,7 @@ const CreateClientForm = () => {
               <Form.Control
                 aria-label="Password"
                 aria-describedby="inputGroup-sizing-default"
-                required type="text" name="password" value={formData.password} onChange={handleChange}
+                required disabled type="text" name="password" value={password} onChange={handleChange}
               />
             </InputGroup>
 
