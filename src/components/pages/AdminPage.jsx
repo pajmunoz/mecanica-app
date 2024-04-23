@@ -5,7 +5,7 @@ import { Url } from '../../constant';
 import { Link } from 'react-router-dom';
 import SearchClient from '../forms/SearchForm';
 
-export default function AdminPage({ handleLogout, username }) {
+export default function AdminPage({ handleLogout, username, userId }) {
   const [loading, setLoading] = useState(true);
   const [clientes, setClientes] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,6 +17,16 @@ export default function AdminPage({ handleLogout, username }) {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [show, setShow] = useState(false);
   const [message, setMessage] = useState('');
+  const [userIdStorage, setUserIdStorage] = useState('');
+
+  useEffect(() => {
+    if (!userId) {
+      const storedUserId = localStorage.getItem('id');
+      if (storedUserId) {
+        setUserIdStorage(storedUserId);
+      }
+    }
+  }, [userId]);
 
   useEffect(() => {
     const indexOfLastClient = currentPage * clientsPerPage;
@@ -26,9 +36,16 @@ export default function AdminPage({ handleLogout, username }) {
   }, [currentPage, clientsPerPage, clientes]);
 
   useEffect(() => {
+    console.log('userID', userId)
+    if (!userId && !userIdStorage) {
+      return; // Evita hacer la solicitud si no hay userId ni userIdStorage
+    }
+    const userIdToFetch = userId || userIdStorage;
+
+
     const fetchData = async () => {
       try {
-        const response = await fetch(`${Url}/clients`);
+        const response = await fetch(`${Url}/users/${userIdToFetch}/clients`);
         const data = await response.json();
         const sortedData = data.sort((a, b) => {
           if (!a || !b) return 0;
@@ -47,7 +64,7 @@ export default function AdminPage({ handleLogout, username }) {
     };
 
     fetchData();
-  }, []);
+  }, [userId, userIdStorage]);
 
   const handleSearch = (searchTerm) => {
     const filteredClients = clientes.filter(client =>

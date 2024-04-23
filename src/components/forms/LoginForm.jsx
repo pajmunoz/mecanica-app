@@ -19,9 +19,10 @@ export default function LoginForm({ handleLogin, loggedUser }) {
       const response = await axios.post(`${Url}/login`, { username, password });
       setLogging(false)
       console.log(response.data); // Mensaje de éxito
+      console.log('ID',response.data.user_id)
       setIsAuthenticated(true);
       handleLogin(isAuthenticated)
-      loggedUser(username)
+      loggedUser(response.data.user_name, response.data.user_id)
 
       navigate('/admin');
     } catch (err) {

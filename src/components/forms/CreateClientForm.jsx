@@ -13,6 +13,7 @@ const CreateClientForm = () => {
     brand: '',
     plate: '',
     oil_date: '',
+    user_id:localStorage.getItem('id'),
     notify: 0
   });
   const [show, setShow] = useState(false);
