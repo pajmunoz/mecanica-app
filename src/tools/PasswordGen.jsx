@@ -2,7 +2,7 @@ const numbers = "0123456789";
 const upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
 const specialChars = "!^+%&/()=?_#$§{[]}|;:>÷<.*-@é";
-const charLength = 20;
+const charLength = 15;
 const charList = numbers + upperCaseLetters + lowerCaseLetters + specialChars;
 
 export default function PasswordGen() {

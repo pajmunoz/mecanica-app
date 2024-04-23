@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {Button, Form, InputGroup, Row, Col, Toast} from 'react-bootstrap';
+import { Button, Form, InputGroup, Row, Col, Toast } from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link, useNavigate } from 'react-router-dom';
 import PasswordGen from '../../tools/PasswordGen';
@@ -15,11 +15,12 @@ const CreateClientForm = () => {
     brand: '',
     plate: '',
     oil_date: '',
-    user_id:localStorage.getItem('id'),
-    username:'',
-    password:'',
+    user_id: localStorage.getItem('id'),
+    username: '',
+    password: '',
     notify: 0
   });
+  const [showCopied, setShowCopied] = useState(false);
   const [show, setShow] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [message, setMessage] = useState('');
@@ -67,10 +68,19 @@ const CreateClientForm = () => {
     handleMessage('Cliente Agregado Exitosamente!')
   };
 
+  const handleCopyPass = (pass) => {
+    navigator.clipboard.writeText(pass)
+    console.log('contrasena copiada ', pass)
+    setShowCopied(true)
+  }
+
   return (
 
 
     <>
+      <Toast onCloseCopied={() => showCopied(false)} show={show} delay={3000} autohide>
+        <Toast.Body>Contraseña copiada!</Toast.Body>
+      </Toast>
       <Row>
         <Col></Col>
         <Col md='auto'>
@@ -109,7 +119,7 @@ const CreateClientForm = () => {
               <Form.Control
                 aria-label="tel"
                 aria-describedby="inputGroup-sizing-default"
-                required type="phone" name="tel"  placeholder="2364 12 3456" value={formData.tel} onChange={handleChange}
+                required type="phone" name="tel" placeholder="2364 12 3456" value={formData.tel} onChange={handleChange}
               />
             </InputGroup>
 
@@ -167,7 +177,7 @@ const CreateClientForm = () => {
                 required type="date" name="oil_date" value={formData.oil_date} onChange={handleChange}
               />
             </InputGroup>
-            
+
             <InputGroup className="mb-3">
               <InputGroup.Text id="inputGroup-sizing-default">
                 Usuario
@@ -188,6 +198,9 @@ const CreateClientForm = () => {
                 aria-describedby="inputGroup-sizing-default"
                 required disabled type="text" name="password" value={password} onChange={handleChange}
               />
+              <Button variant="outline-secondary" id="button-addon2" onClick={() => handleCopyPass(password)}>
+                Copiar
+              </Button>
             </InputGroup>
 
             <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
