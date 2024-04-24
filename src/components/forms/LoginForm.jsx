@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Row, Col, Spinner, InputGroup } from 'react-bootstrap';
 import { Url } from '../../constant';
@@ -18,8 +18,8 @@ export default function LoginForm({ handleLogin, loggedUser }) {
     try {
       const response = await axios.post(`${Url}/login`, { username, password });
       setLogging(false)
-      console.log(response.data); // Mensaje de éxito
-      console.log('ID',response.data.user_id)
+      //console.log(response.data); // Mensaje de éxito
+      //console.log('ID', response.data.user_id)
       setIsAuthenticated(true);
       handleLogin(isAuthenticated)
       loggedUser(response.data.user_name, response.data.user_id)
@@ -73,6 +73,8 @@ export default function LoginForm({ handleLogin, loggedUser }) {
               />
             </InputGroup>
             <Button variant="dark" type="submit">Iniciar sesión</Button>
+            <hr />
+            <span>Sos cliente? - <Link to={'/client-login'}>Inicia sesión</Link> </span>
             {error && <p>{error}</p>}
           </form>
         </>}</Col>

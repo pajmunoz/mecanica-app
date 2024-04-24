@@ -1,9 +1,16 @@
-import { useState } from 'react';
-import {Button, Form, InputGroup, Row, Col, Toast} from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Button, Form, InputGroup, Row, Col, Toast } from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link, useNavigate } from 'react-router-dom';
+import PasswordGen from '../../tools/PasswordGen';
 
 const CreateClientForm = () => {
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    setPassword(PasswordGen());
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
@@ -13,9 +20,12 @@ const CreateClientForm = () => {
     brand: '',
     plate: '',
     oil_date: '',
-    user_id:localStorage.getItem('id'),
+    user_id: localStorage.getItem('id'),
+    client_user: '',
+    client_pass: '',
     notify: 0
   });
+  const [showCopied, setShowCopied] = useState(false);
   const [show, setShow] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [message, setMessage] = useState('');
@@ -40,7 +50,9 @@ const CreateClientForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData
+          ...formData,
+          client_user: `${formData.name}${formData.lastname.charAt(0).toUpperCase()}${formData.lastname.slice(1)}`,
+          client_pass: password
         }),
       });
       const data = await response.json();
@@ -62,6 +74,12 @@ const CreateClientForm = () => {
     }
     handleMessage('Cliente Agregado Exitosamente!')
   };
+
+  const handleCopyPass = (pass) => {
+    navigator.clipboard.writeText(pass)
+    console.log('contrasena copiada ', pass)
+    setShowCopied(true)
+  }
 
   return (
 
@@ -105,7 +123,7 @@ const CreateClientForm = () => {
               <Form.Control
                 aria-label="tel"
                 aria-describedby="inputGroup-sizing-default"
-                required type="phone" name="tel"  placeholder="2364 12 3456" value={formData.tel} onChange={handleChange}
+                required type="phone" name="tel" placeholder="2364 12 3456" value={formData.tel} onChange={handleChange}
               />
             </InputGroup>
 
@@ -164,6 +182,31 @@ const CreateClientForm = () => {
               />
             </InputGroup>
 
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Usuario
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Username"
+                aria-describedby="inputGroup-sizing-default"
+                required type="text" name="client_user" value={`${formData.name}${formData.lastname.charAt(0).toUpperCase()}${formData.lastname.slice(1)}`} onChange={handleChange}
+              />
+            </InputGroup>
+
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="inputGroup-sizing-default">
+                Contraseña
+              </InputGroup.Text>
+              <Form.Control
+                aria-label="Password"
+                aria-describedby="inputGroup-sizing-default"
+                required disabled type="text" name="client_pass" value={password} onChange={handleChange}
+              />
+              <Button variant="outline-secondary" id="button-addon2" onClick={() => handleCopyPass(password)}>
+                Copiar
+              </Button>
+            </InputGroup>
+
             <Button className='w-100 my-2' variant='primary' type="submit">Guardar</Button>
 
           </form>
@@ -177,6 +220,9 @@ const CreateClientForm = () => {
               <Toast.Body className='text-white text-center'>{message} ✓</Toast.Body>
             </Toast>
           )}
+          <Toast className='bg-success position-fixed top-50 start-50 translate-middle' onClose={() => setShowCopied(false)} position="top-start" show={showCopied} delay={3000} autohide>
+            <Toast.Body className='text-white text-center'>Contraseña copiada!</Toast.Body>
+          </Toast>
 
         </Col>
         <Col></Col>
