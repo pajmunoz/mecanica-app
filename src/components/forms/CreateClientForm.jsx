@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Form, InputGroup, Row, Col, Toast } from 'react-bootstrap';
 import { Url } from '../../constant';
 import { Link, useNavigate } from 'react-router-dom';
 import PasswordGen from '../../tools/PasswordGen';
 
 const CreateClientForm = () => {
-  const password = PasswordGen()
+  const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    setPassword(PasswordGen());
+  }, []);
+
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
@@ -78,9 +83,6 @@ const CreateClientForm = () => {
 
 
     <>
-      <Toast onCloseCopied={() => showCopied(false)} show={show} delay={3000} autohide>
-        <Toast.Body>Contraseña copiada!</Toast.Body>
-      </Toast>
       <Row>
         <Col></Col>
         <Col md='auto'>
@@ -216,6 +218,9 @@ const CreateClientForm = () => {
               <Toast.Body className='text-white text-center'>{message} ✓</Toast.Body>
             </Toast>
           )}
+          <Toast className='bg-success position-fixed top-50 start-50 translate-middle' onClose={() => setShowCopied(false)} position="top-start" show={showCopied} delay={3000} autohide>
+            <Toast.Body className='text-white text-center'>Contraseña copiada!</Toast.Body>
+          </Toast>
 
         </Col>
         <Col></Col>
