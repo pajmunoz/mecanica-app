@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Row, Col, Spinner, InputGroup } from 'react-bootstrap';
 import { Url } from '../../constant';
+import img from '../../assets/client.gif';
 
 export default function LoginClient({ handleLogin, loggedUser }) {
     const [logging, setLogging] = useState(false)
@@ -41,10 +42,13 @@ export default function LoginClient({ handleLogin, loggedUser }) {
         <Row className='mt-5'>
             <Col></Col>
             <Col md="auto">
+                <figure className='mx-auto'>
+                    <img className='w-100' src={img} alt="" />
+                </figure>
                 {logging ? <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" /> : <>
                     <h3 className='text-center'>
                         MecanicApp
-                        <small className="text-body-secondary"> Clientes</small>
+                        <small className="text-body-secondary"> Cliente</small>
                     </h3>
                     <hr />
                     <form onSubmit={handleSubmit} className='text-center'>
@@ -73,6 +77,8 @@ export default function LoginClient({ handleLogin, loggedUser }) {
                         </InputGroup>
                         <Button variant="dark" type="submit">Iniciar sesión</Button>
                         {error && <p>{error}</p>}
+                        <hr/>
+                        <span>Sos técnico? - <Link to={'/login'}>Inicia sesión</Link> </span>
                     </form>
                 </>}</Col>
             <Col></Col>

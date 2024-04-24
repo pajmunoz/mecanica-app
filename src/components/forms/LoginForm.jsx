@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Form, Button, Row, Col, Spinner, InputGroup } from 'react-bootstrap';
 import { Url } from '../../constant';
+import img from '../../assets/user.gif';
 
 export default function LoginForm({ handleLogin, loggedUser }) {
   const [logging, setLogging] = useState(false)
@@ -40,12 +41,17 @@ export default function LoginForm({ handleLogin, loggedUser }) {
 
   return (
     <Row className='mt-5'>
+
       <Col></Col>
       <Col md="auto">
+        <figure className=' mx-auto'>
+          <img className='w-100' src={img} alt="" />
+          
+        </figure>
         {logging ? <Spinner className='position-absolute top-50 start-50 translate-middle' animation="grow" variant="dark" /> : <>
           <h3 className='text-center'>
             MecanicApp
-            <small className="text-body-secondary">Login</small>
+            <small className="text-body-secondary"> Técnico</small>
           </h3>
           <hr />
           <form onSubmit={handleSubmit} className='text-center'>
