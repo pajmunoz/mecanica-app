@@ -19,7 +19,10 @@ export default function EditClientForm() {
     year: '',
     brand: '',
     plate: '',
-    oil_date: ''
+    oil_date: '',
+    client_user:'',
+    client_pass:''
+
   });
 
 
@@ -46,7 +49,10 @@ export default function EditClientForm() {
           year: data.year,
           brand: data.brand,
           plate: data.plate,
-          oil_date: formatDate(data.oil_date)
+          oil_date: formatDate(data.oil_date),
+          client_user:data.client_user,
+          client_pass:data.client_pass
+
         });
       } catch (error) {
         console.error('Error al obtener datos del servidor:', error);
@@ -197,6 +203,28 @@ export default function EditClientForm() {
                   aria-label="Aceite"
                   aria-describedby="inputGroup-sizing-default"
                   required type="date" name="oil_date" value={formData.oil_date} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Usuario
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Placa"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="client_user" placeholder="OFS-224" value={formData.client_user} onChange={handleChange}
+                />
+              </InputGroup>
+
+              <InputGroup className="mb-3">
+                <InputGroup.Text id="inputGroup-sizing-default">
+                  Contraseña
+                </InputGroup.Text>
+                <Form.Control
+                  aria-label="Placa"
+                  aria-describedby="inputGroup-sizing-default"
+                  required type="text" name="client_pass" placeholder="OFS-224" value={formData.client_pass} onChange={handleChange}
                 />
               </InputGroup>
 
