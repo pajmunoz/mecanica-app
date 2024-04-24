@@ -21,8 +21,8 @@ const CreateClientForm = () => {
     plate: '',
     oil_date: '',
     user_id: localStorage.getItem('id'),
-    username: '',
-    password: '',
+    client_user: '',
+    client_pass: '',
     notify: 0
   });
   const [showCopied, setShowCopied] = useState(false);
@@ -50,7 +50,9 @@ const CreateClientForm = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...formData
+          ...formData,
+          client_user: `${formData.name}${formData.lastname.charAt(0).toUpperCase()}${formData.lastname.slice(1)}`,
+          client_pass: password
         }),
       });
       const data = await response.json();
@@ -187,7 +189,7 @@ const CreateClientForm = () => {
               <Form.Control
                 aria-label="Username"
                 aria-describedby="inputGroup-sizing-default"
-                required type="text" name="username" value={`${formData.name}${formData.lastname.charAt(0).toUpperCase()}${formData.lastname.slice(1)}`} onChange={handleChange}
+                required type="text" name="client_user" value={`${formData.name}${formData.lastname.charAt(0).toUpperCase()}${formData.lastname.slice(1)}`} onChange={handleChange}
               />
             </InputGroup>
 
@@ -198,7 +200,7 @@ const CreateClientForm = () => {
               <Form.Control
                 aria-label="Password"
                 aria-describedby="inputGroup-sizing-default"
-                required disabled type="text" name="password" value={password} onChange={handleChange}
+                required disabled type="text" name="client_pass" value={password} onChange={handleChange}
               />
               <Button variant="outline-secondary" id="button-addon2" onClick={() => handleCopyPass(password)}>
                 Copiar

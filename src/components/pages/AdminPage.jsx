@@ -36,7 +36,7 @@ export default function AdminPage({ handleLogout, username, userId }) {
   }, [currentPage, clientsPerPage, clientes]);
 
   useEffect(() => {
-    console.log('userID', userId)
+    //console.log('userID', userId)
     if (!userId && !userIdStorage) {
       return; // Evita hacer la solicitud si no hay userId ni userIdStorage
     }
@@ -110,7 +110,7 @@ export default function AdminPage({ handleLogout, username, userId }) {
   const handleLogOutClick = () => {
     setTimeout(() => {
       handleLogout()
-      console.log('logout')
+      //console.log('logout')
     }, 1000)
   }
 
