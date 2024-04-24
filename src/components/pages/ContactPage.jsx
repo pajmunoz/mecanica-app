@@ -6,7 +6,7 @@ export default function ContactPage() {
   }
   return (
     <>
-      <h3 class="text-center my-5">Somos<small class="text-body-secondary"> Hara Software</small></h3>
+      <h3 className="text-center my-5">Somos<small className="text-body-secondary"> Hara Software</small></h3>
       <ListGroup>
         <ListGroup.Item>{data.desc}</ListGroup.Item>
         <br />

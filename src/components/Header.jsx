@@ -11,8 +11,8 @@ export default function Header({ isAuthenticated }) {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               {isAuthenticated ? <Nav.Link as={NavLink} to="/admin">Home</Nav.Link> : <Nav.Link as={NavLink} to="/">Home</Nav.Link>}
-              {isAuthenticated ? null : <Nav.Link as={NavLink} to="/login">Login</Nav.Link>}
-              {isAuthenticated ? null : <Nav.Link as={NavLink} to="/client-login">Login de cliente</Nav.Link>}
+              {isAuthenticated ? null : <Nav.Link as={NavLink} to="/login">Técnico</Nav.Link>}
+              {isAuthenticated ? null : <Nav.Link as={NavLink} to="/client-login">Cliente</Nav.Link>}
               <Nav.Link as={NavLink} to="/contact">Contacto</Nav.Link>
             </Nav>
           </Navbar.Collapse>
